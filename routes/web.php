@@ -33,5 +33,5 @@ Route::post('/weixin/pay/notify',"Weixin\PayController@notify");
 
 // 商品
 Route::get('/goods/index',"GoodsController@index");   
-Route::post('/goods/detail',"GoodsController@detail");       
+Route::get('/goods/detail',"GoodsController@detail");       
 
