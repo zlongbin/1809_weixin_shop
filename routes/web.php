@@ -32,6 +32,8 @@ Route::get('/weixin/pay',"Weixin\PayController@pay");
 Route::post('/weixin/pay/notify',"Weixin\PayController@notify");
 
 // 商品
-Route::get('/goods/index',"GoodsController@index");   
-Route::get('/goods/detail',"GoodsController@detail");       
-
+Route::get('/goods/index',"GoodsController@index");             //商品表首页
+Route::get('/goods/detail',"GoodsController@detail");           //商品详情
+Route::get('/goods/cache/{id?}',"GoodsController@cacheGoods");          //哈希
+Route::get('/goods/sort',"GoodsController@getSort");        //浏览记录排名
+Route::get('/goods/history',"GoodsController@history");         //浏览历史

@@ -81,9 +81,21 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    {{$goods->name}}{{$goods->price}}
+                    {{$goods_detail->name}}----{{$goods_detail->price}}
+                </div>
+                <div>
+                    @foreach($history_Info as $k=>$v)
+                        {{$v['name']}}----{{$v['price']}}----{{$v['store']}}<br>
+                    @endforeach
                 </div>
             </div>
         </div>
     </body>
 </html>
+<script>
+    window.onload=function(){
+        // if(location.href.indexOf("?xyz=")<0){
+        //     location.href=location.href+"?xyz="+Math.random();
+        // }
+    }
+</script>

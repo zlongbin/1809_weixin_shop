@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\Redis;
 
 class GoodsController extends Controller
 {
-    //
+    /**
+     * 商品
+     */
     public function index(){
         $goods_Info = GoodsModel::get()->toArray();
         // echo "<pre>";print_r($goods_Info);echo "</pre>";
@@ -20,27 +22,95 @@ class GoodsController extends Controller
         ];
         return view('goods/index',$data);
     }
+    /**
+     * 商品详情
+     */
     public function detail(){
         $goods_id = $_GET['goods_id'];
-        $goods = GoodsLookModel::where(['id'=>$goods_id])->first();
-        $key = $goods_id;
-        $history = Redis::incr($key);
-        // echo $history;die;
-        $look_num = $goods->look_num += 1;
-        if($goods){
-            $look_num = GoodsModel::where(['id'=>$goods_id])->update(['look_num'=>$look_num]);
-        }else{
-            $look = [
-                'goods_id' => $goods_id,
-                'uid' => Auth::id(),
-                'look_num' => $look_num
-            ];
-            GoodsLookModel::insertGetId($look);
-        }
+        // echo $goods_id;
+        // $goods = GoodsLookModel::where(['id'=>$goods_id])->first();
+        // echo "<pre>";print_r($goods);echo "</pre>";die;
+        // $redis_view_key = "count:view:goods_id:".$goods_id;     //浏览量
+        // $view = Redis::incr($redis_view_key);                   //浏览量+n
+        // $redis_ss_view = "ss:goods:view";                       //浏览排名
+        // $redis = Redis::zAdd($redis_ss_view,$view,$goods_id);            //有序集合记录  浏览排名
+        // echo "<pre>";print_r($view);echo "</pre>";die;
+        $history_Info = $this->history($goods_id);
+        // 数据库
+        // if($goods){
+        //     $look_num = $goods->look_num += 1;
+        //     $look = GoodsLookModel::where(['id'=>$goods_id])->update(['look_num'=>$look_num]);
+        // }else{
+        //     $look = [
+        //         'goods_id' => $goods_id,
+        //         'uid' => Auth::id(),
+        //         'look_num' => 1,
+        //         'look_time' => time()
+        //     ];
+        //     GoodsLookModel::insertGetId($look);
+        // }
+        $goods_detail = GoodsModel::where(['id'=>$goods_id])->first();
         // echo "<pre>";print_r($goods);echo "</pre>";
         $data = [
-            'goods' => $goods
+            'goods_detail' => $goods_detail,
+            'history_Info' =>$history_Info
         ];
         return view('goods/goodsDetail',$data);
+    }
+    /**
+     * 哈希
+     */
+    public function cacheGoods($goods_id){
+        $goods_id = intval($goods_id);
+        $redis_cache_goods_key = "h:goods_Info:".$goods_id;
+        $cache_Info = Redis::hGetAll($redis_cache_goods_key);       //获取缓存
+        if($cache_Info){
+            echo "Cache";                           //有缓存
+        }else{
+            echo "No Cache";                        //无缓存
+            $goods_Info = GoodsModel::where(['id'=>$goods_id])->first()->toArray();         
+            Redis::hMset($redis_cache_goods_key,$goods_Info);       //存储缓存
+        }
+    }
+    /**
+     * 获取商品浏览排名
+     */
+    public function getSort(){
+        $key = "ss:goods:view";
+        $list = Redis::zRangeByScore($key,0,10000,['withscores'=>true]);
+        echo "<pre>";print_r($list);echo "</pre>";
+        $lists = Redis::zRevRange($key,0,10000,true);
+        echo "<pre>";print_r($lists);echo "</pre>";
+    }
+    /**
+     * 浏览历史
+     */
+    public function history($goods_id){
+        $redis_history_goods_key = "h:goods_history:".$goods_id.Auth::id();
+        $cache_Info = Redis::hGetAll($redis_history_goods_key);       //获取缓存
+        if($cache_Info){
+            // echo '1122';die;
+            // $cache_Info['time']=time();
+            $history=Redis::hSet($redis_history_goods_key,'time',time()); 
+        }else{
+            // echo '7788';die;
+            $goods_Info = GoodsModel::where(['id'=>$goods_id])->first()->toArray();      
+            $goods_Info['uid']=Auth::id();
+            $goods_Info['time']=time();
+            $history=Redis::hMset($redis_history_goods_key,$goods_Info);       //存储缓存
+            
+        }
+        // die;
+        $redis_ss_history = "ss:goods:history";                       //浏览排名
+        $zadd = Redis::zAdd($redis_ss_history,$cache_Info['time'],$goods_id);            //有序集合记录  浏览排名
+
+        $lists = Redis::zRevRange($redis_ss_history,0,9999999999,true);
+        echo "<pre>";print_r($lists);echo "</pre>";
+        foreach($lists as $k=>$v){
+            // $goods_Info[] = GoodsModel::where(['id'=>$k])->first()->toArray();
+            $goods_Info[] = Redis::hGetAll("h:goods_history:".$k.Auth::id());
+        }
+        // var_dump($goods_Info);
+        return $goods_Info;
     }
 }
