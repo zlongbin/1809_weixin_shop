@@ -29,6 +29,14 @@ class JssdkController extends Controller
         return view('weixin/jssdk',$data);
     }
     public function getImg(){
-        echo "<pre>";print_r($_GET);echo "</pre>";
+        // echo "<pre>";print_r($_GET);echo "</pre>";
+        $media_id = $_GET['media_id'];
+        $access_token = getAccessToken();
+        $url = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=" . $access_token . "&media_id=" . $media_id;
+        $response = json_decode(file_get_contents($url),true);
+        echo "<pre>";print_r($response);echo "</pre>";die;
+    }
+    public function imgs(){
+
     }
 }

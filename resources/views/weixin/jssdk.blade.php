@@ -47,7 +47,13 @@
                             isShowProgressTips: 1, // 默认为1，显示进度提示
                             success: function (res) {
                                 var serverId = res.serverId; // 返回图片的服务器端ID
-                                console.log(serverId)
+                                $.ajax({
+                                    url: '/js/getImg?media_id='+serverId,
+                                    type:'get',
+                                    success:function(res){
+                                        console.log(res)
+                                    }
+                                })
                                 // 下载图片
                                 wx.downloadImage({
                                     serverId: serverId, // 需要下载的图片的服务器端ID，由uploadImage接口获得
@@ -59,13 +65,13 @@
                             }
                         });
                     })
-                    $.ajax({
-                        url: '/js/getImg?img='+img,
-                        type:'get',
-                        success:function(res){
-                            console.log(res)
-                        }
-                    })
+                    // $.ajax({
+                    //     url: '/js/getImg?img='+img,
+                    //     type:'get',
+                    //     success:function(res){
+                    //         console.log(res)
+                    //     }
+                    // })
                 }
             });
         })
