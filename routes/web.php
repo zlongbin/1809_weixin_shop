@@ -40,3 +40,5 @@ Route::get('/goods/history',"GoodsController@history");         //浏览历史
 
 // 微信JSSDK
 Route::get('/js/test',"Weixin\JssdkController@jsTest");         //浏览历史
+Route::get('/js/getImg',"Weixin\JssdkController@getImg");         //浏览历史
+
