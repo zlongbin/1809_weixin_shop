@@ -8,6 +8,9 @@
 </head>
 <body>
     <div id="images"></div>
+    <img src="" alt="" id="img0">
+    <img src="" alt="" id="img1">
+    <img src="" alt="" id="img2">
     <button id="img">选择图片</button>
 </body>
 </html>
@@ -33,7 +36,8 @@
                     var img = ''
                     $.each(localIds,function(i,v){
                         img += v + ','
-                        $('#images').append("<img src='v'>")
+                        var none = '#img'+i
+                        $(none).attr('src'.v)
                     })
                     $.ajax({
                         url: '/js/getImg?img='+img,
