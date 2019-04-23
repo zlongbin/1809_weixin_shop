@@ -7,6 +7,7 @@
     <title>Document</title>
 </head>
 <body>
+    <div id="images"></div>
     <button id="img">选择图片</button>
 </body>
 </html>
@@ -24,11 +25,23 @@
     wx.ready(function(){
         $(document).on('click','#img',function(){
             wx.chooseImage({
-                count: 1, // 默认9
+                count: 3, // 默认9
                 sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
                 sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                 success: function (res) {
-                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                    var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                    var img = ''
+                    $.each(localIds,function(i,v){
+                        img += v + ','
+                        $('#images').append("<img src='v'>")
+                    })
+                    $.ajax({
+                        url: '/js/getImg?img='+img,
+                        type:'get',
+                        success:function(res){
+                            console.log(res)
+                        }
+                    })
                 }
             });
         })
