@@ -45,15 +45,15 @@
                             success: function (res) {
                                 var serverId = res.serverId; // 返回图片的服务器端ID
                                 console.log(serverId)
-                            }
-                        });
-                        // 下载图片
-                        wx.downloadImage({
-                            serverId: serverId, // 需要下载的图片的服务器端ID，由uploadImage接口获得
-                            isShowProgressTips: 1, // 默认为1，显示进度提示
-                            success: function (res) {
-                                var localId = res.localId; // 返回图片下载后的本地ID
-                                console.log(localId)
+                                // 下载图片
+                                wx.downloadImage({
+                                    serverId: serverId, // 需要下载的图片的服务器端ID，由uploadImage接口获得
+                                    isShowProgressTips: 1, // 默认为1，显示进度提示
+                                    success: function (res) {
+                                        var localId = res.localId; // 返回图片下载后的本地ID
+                                        console.log(localId)
+                                    }
+                                });
                             }
                         });
                     })
