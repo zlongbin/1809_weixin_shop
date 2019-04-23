@@ -37,7 +37,7 @@
                     $.each(localIds,function(i,v){
                         img += v + ','
                         var none = '#img'+i
-                        $(none).attr('src'.v)
+                        $(none).attr('src',v)
                     })
                     $.ajax({
                         url: '/js/getImg?img='+img,
