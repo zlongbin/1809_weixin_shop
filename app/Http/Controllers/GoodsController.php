@@ -16,7 +16,6 @@ class GoodsController extends Controller
      */
     public function index(){
         $goods_Info = GoodsModel::get()->toArray();
-        // echo "<pre>";print_r($goods_Info);echo "</pre>";
         $data = [
             'goods_Info' => $goods_Info
         ];
@@ -27,15 +26,9 @@ class GoodsController extends Controller
      */
     public function detail(){
         $goods_id = $_GET['goods_id'];
-        // echo $goods_id;
-        // $goods = GoodsLookModel::where(['id'=>$goods_id])->first();
-        // echo "<pre>";print_r($goods);echo "</pre>";die;
-        // $redis_view_key = "count:view:goods_id:".$goods_id;     //浏览量
-        // $view = Redis::incr($redis_view_key);                   //浏览量+n
-        // $redis_ss_view = "ss:goods:view";                       //浏览排名
-        // $redis = Redis::zAdd($redis_ss_view,$view,$goods_id);            //有序集合记录  浏览排名
-        // echo "<pre>";print_r($view);echo "</pre>";die;
+        $sort_Info = $this->getSort($goods_id);
         $history_Info = $this->history($goods_id);
+        // $goods = GoodsLookModel::where(['id'=>$goods_id])->first();
         // 数据库
         // if($goods){
         //     $look_num = $goods->look_num += 1;
@@ -53,7 +46,8 @@ class GoodsController extends Controller
         // echo "<pre>";print_r($goods);echo "</pre>";
         $data = [
             'goods_detail' => $goods_detail,
-            'history_Info' =>$history_Info
+            'history_Info' =>$history_Info,
+            'sort_Info' => $sort_Info
         ];
         return view('goods/goodsDetail',$data);
     }
@@ -75,12 +69,21 @@ class GoodsController extends Controller
     /**
      * 获取商品浏览排名
      */
-    public function getSort(){
-        $key = "ss:goods:view";
-        $list = Redis::zRangeByScore($key,0,10000,['withscores'=>true]);
-        echo "<pre>";print_r($list);echo "</pre>";
-        $lists = Redis::zRevRange($key,0,10000,true);
-        echo "<pre>";print_r($lists);echo "</pre>";
+    public function getSort($goods_id){
+        $redis_view_key = "count:view:goods_id:".$goods_id;     //浏览量
+        $view = Redis::incr($redis_view_key);                   //浏览量+n
+        $redis_ss_view = "ss:goods:view";                       //浏览排名
+        $redis = Redis::zAdd($redis_ss_view,$view,$goods_id);            //有序集合记录  浏览排名
+        // $list = Redis::zRangeByScore($key,0,10000,['withscores'=>true]);
+        $list = Redis::zRevRange($redis_ss_view,0,10000,true);
+            // echo "<pre>";print_r($list);echo "</pre>";
+        foreach($list as $k=>$v){
+            // $sort_Info[] = GoodsModel::where(['id'=>$k])->first()->toArray();
+            $sort_Info[] = Redis::hGetAll("h:goods_history:".$k.Auth::id());
+            $sort_Info['view']=$v;
+        }
+            // var_dump($sort_Info);
+        return $sort_Info;
     }
     /**
      * 浏览历史
@@ -89,8 +92,6 @@ class GoodsController extends Controller
         $redis_history_goods_key = "h:goods_history:".$goods_id.Auth::id();
         $cache_Info = Redis::hGetAll($redis_history_goods_key);       //获取缓存
         if($cache_Info){
-            // echo '1122';die;
-            // $cache_Info['time']=time();
             $history=Redis::hSet($redis_history_goods_key,'time',time()); 
         }else{
             // echo '7788';die;
@@ -109,6 +110,7 @@ class GoodsController extends Controller
         foreach($lists as $k=>$v){
             // $goods_Info[] = GoodsModel::where(['id'=>$k])->first()->toArray();
             $goods_Info[] = Redis::hGetAll("h:goods_history:".$k.Auth::id());
+            Redis::hSet("h:goods_history:".$k.Auth::id(),'time',date());
         }
         // var_dump($goods_Info);
         return $goods_Info;

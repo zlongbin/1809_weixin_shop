@@ -84,9 +84,30 @@
                     {{$goods_detail->name}}----{{$goods_detail->price}}
                 </div>
                 <div>
+                <table border=1>
+                    <tr>
+                        <td>商品</td>
+                        <td>浏览时间</td>
+                    </tr>
                     @foreach($history_Info as $k=>$v)
-                        {{$v['name']}}----{{$v['price']}}----{{$v['store']}}<br>
+                        <tr>
+                            <td>{{$v['name']}}----{{$v['price']}}----{{$v['store']}}</td>
+                            <td>{{$v['time']}}</td>
+                        </tr>
                     @endforeach
+                </table>
+                <table border=1>
+                    <tr>
+                        <td>商品</td>
+                        <td>浏览次数</td>
+                    </tr>
+                    @foreach($sort_Info as $k=>$v)
+                        <tr>
+                            <td>{{$v['name']}}----{{$v['price']}}----{{$v['store']}}</td>
+                            <td></td>
+                        </tr>
+                    @endforeach
+                </table>
                 </div>
             </div>
         </div>
