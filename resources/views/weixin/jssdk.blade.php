@@ -7,11 +7,19 @@
     <title>Document</title>
 </head>
 <body>
-    <div id="images"></div>
-    <img src="" alt="" id="img0">
-    <img src="" alt="" id="img1">
-    <img src="" alt="" id="img2">
+    <div id="images">
+        <img src="" alt="" id="img0">
+        <img src="" alt="" id="img1">
+        <img src="" alt="" id="img2">
+    </div>
+
     <button id="img">选择图片</button>
+
+    <div>
+        <img src="" alt="" class="img0">
+        <img src="" alt="" class="img1">
+        <img src="" alt="" class="img2">
+    </div>
 </body>
 </html>
 <script src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
@@ -51,7 +59,14 @@
                                     isShowProgressTips: 1, // 默认为1，显示进度提示
                                     success: function (res) {
                                         var localId = res.localId; // 返回图片下载后的本地ID
-                                        console.log(localId)
+                                        // 查看本地图片
+                                        wx.getLocalImgData({
+                                            localId: localId, // 图片的localID
+                                            success: function (res) {
+                                                var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+                                                $('.img0').attr('src',localData)
+                                            }
+                                        });
                                     }
                                 });
                             }
