@@ -14,12 +14,7 @@
     </div>
 
     <button id="img">选择图片</button>
-
-    <div>
-        <img src="" alt="" class="img0">
-        <img src="" alt="" class="img1">
-        <img src="" alt="" class="img2">
-    </div>
+    <button class='chare'>分享</button>
 </body>
 </html>
 <script src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
@@ -73,10 +68,12 @@
                     })
                 }
             });
+        })
+        $(document).on('click','.share',function(){
             wx.updateAppMessageShareData({ 
                 title: '测试', // 分享标题
                 desc: '分享测试', // 分享描述
-                link: 'http://1809zhoubinbin.comcto.com/js/test', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                link: '1809zhoubinbin.comcto.com', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: '/images/QQ图片20190107153840.jpg', // 分享图标
                 success: function () {
                 // 设置成功
