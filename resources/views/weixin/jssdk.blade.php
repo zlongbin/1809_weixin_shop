@@ -31,7 +31,7 @@
         timestamp: "{{$js_config['timestamp']}}", // 必填，生成签名的时间戳
         nonceStr: "{{$js_config['nonceStr']}}", // 必填，生成签名的随机串
         signature: "{{$js_config['signature']}}",// 必填，签名
-        jsApiList: ['chooseImage','uploadImage','downloadImage','getLocalImgData','updateAppMessageShareData'] // 必填，需要使用的JS接口列表
+        jsApiList: ['chooseImage','uploadImage','downloadImage','updateAppMessageShareData'] // 必填，需要使用的JS接口列表
     });
     wx.ready(function(){
         $(document).on('click','#img',function(){
@@ -59,14 +59,6 @@
                                     isShowProgressTips: 1, // 默认为1，显示进度提示
                                     success: function (res) {
                                         var localId = res.localId; // 返回图片下载后的本地ID
-                                        // 查看本地图片
-                                        wx.getLocalImgData({
-                                            localId: localId, // 图片的localID
-                                            success: function (res) {
-                                                var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
-                                                $('.img0').attr('src',localData)
-                                            }
-                                        });
                                     }
                                 });
                             }
@@ -81,15 +73,16 @@
                     })
                 }
             });
+            wx.updateAppMessageShareData({ 
+                title: '测试', // 分享标题
+                desc: '分享测试', // 分享描述
+                link: 'http://1809zhoubinbin.comcto.com/js/test', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: '/images/QQ图片20190107153840.jpg', // 分享图标
+                success: function () {
+                // 设置成功
+                }
+            })
         })
-        wx.updateAppMessageShareData({ 
-            title: '测试', // 分享标题
-            desc: '分享测试', // 分享描述
-            link: 'http://1809zhoubinbin.comcto.com/js/test', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: '/images/QQ图片20190107153840.jpg', // 分享图标
-            success: function () {
-            // 设置成功
-            }
-        })
+
     });
 </script>
