@@ -27,7 +27,6 @@ class JssdkController extends Controller
             'js_config' => $js_config
         ];
         return view('weixin/jssdk',$data);
-        return view('goods/goodsDetail',$data);
     }
     public function getImg(){
         // echo "<pre>";print_r($_GET);echo "</pre>";
