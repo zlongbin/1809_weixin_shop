@@ -61,7 +61,7 @@ class WeixinController extends Controller
                 <Content><![CDATA['. '欢迎关注 '. $user['nickname'] .']]></Content>
                 </xml>';
             }
-        }elseif($msg_type=="text"){
+        }elseif($msg_type=='text'){
             if(strpos($xml_obj->Content,"最新商品")!==false){
                 $goodsInfo = GoodsModel::orderBy('id','desc')->first();
                 // echo "<pre>";print_r($goodsInfo);echo "</pre>";
@@ -73,11 +73,11 @@ class WeixinController extends Controller
                 <FromUserName><![CDATA['.$openid.']]></FromUserName>
                 <CreateTime>'.time().'</CreateTime>
                 <MsgType><![CDATA[news]]></MsgType>
-                <ArticleCount>1</ArticleCount>
+                <ArticleCount>"1"</ArticleCount>
                 <Articles>
                     <item>
                     <Title><![CDATA['.$goodsInfo['name'].']]></Title>
-                    <Description><![CDATA[description1]]></Description>
+                    <Description><![CDATA["烫死你"]]></Description>
                     <PicUrl><![CDATA['.$PicUrl.']]></PicUrl>
                     <Url><![CDATA['.$Url.']]></Url>
                     </item>
