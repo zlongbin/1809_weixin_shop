@@ -29,6 +29,7 @@ class WeixinController extends Controller
         
         $wx_id = $xml_obj->ToUserName;             // 公众号ID
         $openid = $xml_obj->FromUserName;          //用户OpenID
+        $event = $xml_obj->Event;                  //事件类型
         $msg_type = $xml_obj->MsgType;             // 消息类型
         if($event=='subscribe'){
             // 根据openid判断用户是否存在
