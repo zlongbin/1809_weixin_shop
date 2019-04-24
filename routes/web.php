@@ -43,5 +43,12 @@ Route::get('/js/test',"Weixin\JssdkController@jsTest");         //浏览历史
 Route::get('/js/getImg',"Weixin\JssdkController@getImg");         //浏览历史
 
 //微信事件推送
-Route::get('/wx/valid',"Weixin\WeixinController@valid");         //浏览历史
-Route::post('/wx/valid',"Weixin\WeixinController@wxEvent");         //浏览历史
+Route::get('/wx/valid',"Weixin\WeixinController@valid");         //首次处理
+Route::post('/wx/valid',"Weixin\WeixinController@wxEvent");         //事件推送
+
+// 计划任务
+Route::get('/crontab/del_orders',"CrontabController@delOrder");         //删除过期订单
+
+//网页授权
+Route::get('/wxweb',"Weixin\WeixinController@wxWeb");         //删除过期订单
+Route::get('/wxweb/getu',"Weixin\WeixinController@getU");         //删除过期订单

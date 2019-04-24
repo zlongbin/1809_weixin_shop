@@ -44,7 +44,7 @@ class IndexController extends Controller
      * 订单列表
      */
     public function orderList(){
-        $list = OrderModel::where(['uid'=>Auth::id()])->orderBy('oid','desc')->get()->toArray();
+        $list = OrderModel::where(['uid'=>Auth::id(),'is_delete'=>0])->orderBy('oid','desc')->get()->toArray();
         $data = [
             'list'=>$list
         ];
