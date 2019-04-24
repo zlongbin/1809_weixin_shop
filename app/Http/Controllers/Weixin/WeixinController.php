@@ -29,7 +29,37 @@ class WeixinController extends Controller
         $wx_id = $xml_obj->ToUserName;             // 公众号ID
         $openid = $xml_obj->FromUserName;          //用户OpenID
         $msg_type = $xml_obj->MsgType;             // 消息类型
-        if($msg_type=="text"){
+        if($event=='subscribe'){
+            // 根据openid判断用户是否存在
+            $local_user = WxUserModel::where(['openid'=>$openid])->first();
+            if($local_user){
+                echo '<xml>
+                <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+                <CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType>
+                <Content><![CDATA['. '欢迎回来 '. $local_user['nickname'] .']]></Content>
+                </xml>';
+            }else{
+                // 获取用户信息
+                $user =$this->getUserInfo($openid);
+                // print_r($user) ;die;
+                // 用户信息入库
+                $user_Info=[
+                    'openid'=>$user['openid'],
+                    'nickname'=>$user['nickname'],
+                    'sex'=>$user['sex'],
+                    'headimgurl'=>$user['headimgurl']
+                ];
+                $id = WxUserModel::insert($user_Info);
+                echo '<xml>
+                <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+                <CreateTime>'.time().'</CreateTime>
+                <MsgType><![CDATA[text]]></MsgType>
+                <Content><![CDATA['. '欢迎关注 '. $user['nickname'] .']]></Content>
+                </xml>';
+            }
+        }elseif($msg_type=="text"){
             if(strpos($xml_obj->Content,"最新商品")!==false){
                 $goodsInfo = GoodsModel::orderBy('id','desc')->first();
                 // echo "<pre>";print_r($goodsInfo);echo "</pre>";
@@ -54,5 +84,13 @@ class WeixinController extends Controller
             }
             echo $response;
         }
+    }
+    // 获取微信用户信息
+    public function getUserInfo($openid){
+        // $openid='od-A-1FwnuCU3XUp3HU6wtIuDw48';
+        $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.getAccessToken().'&openid='.$openid.'&lang=zh_CN';
+        $data = file_get_contents($url);
+        $user = json_decode($data,true);
+        return $user;
     }
 }
