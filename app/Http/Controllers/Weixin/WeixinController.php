@@ -40,17 +40,24 @@ class WeixinController extends Controller
                 <ToUserName><![CDATA['.$wx_id.']]></ToUserName>
                 <FromUserName><![CDATA['.$openid.']]></FromUserName>
                 <CreateTime>'.time().'</CreateTime>
-                <MsgType><![CDATA[news]]></MsgType>
-                <ArticleCount>1</ArticleCount>
-                <Articles>
-                    <item>
-                    <Title><![CDATA['.$goodsInfo['name'].']]></Title>
-                    <Description><![CDATA[description1]]></Description>
-                    <PicUrl><![CDATA['.$PicUrl.']]></PicUrl>
-                    <Url><![CDATA['.$Url.']]></Url>
-                    </item>
-                </Articles>
-                </xml>';
+                <MsgType><![CDATA[text]]></MsgType>
+                <Content><![CDATA[你好]]></Content>
+              </xml>';
+                // $response = '<xml>
+                // <ToUserName><![CDATA['.$wx_id.']]></ToUserName>
+                // <FromUserName><![CDATA['.$openid.']]></FromUserName>
+                // <CreateTime>'.time().'</CreateTime>
+                // <MsgType><![CDATA[news]]></MsgType>
+                // <ArticleCount>1</ArticleCount>
+                // <Articles>
+                //     <item>
+                //     <Title><![CDATA['.$goodsInfo['name'].']]></Title>
+                //     <Description><![CDATA[description1]]></Description>
+                //     <PicUrl><![CDATA['.$PicUrl.']]></PicUrl>
+                //     <Url><![CDATA['.$Url.']]></Url>
+                //     </item>
+                // </Articles>
+                // </xml>';
             }
             return $response;
         }
