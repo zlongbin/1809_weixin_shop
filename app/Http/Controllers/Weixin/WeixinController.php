@@ -67,13 +67,20 @@ class WeixinController extends Controller
                 // echo "<pre>";print_r($goodsInfo);echo "</pre>";
                 // echo $goodsInfo['id'];
                 $PicUrl = "http://1809zhoubinbin.comcto.com/images/QQ图片20190107153840.jpg";
-                $Url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goodsInfo['id'];
+                $Url = "http://1809zhoubinbin.comcto.com/goods/detail";
+        //         echo 'Content: '. $xml_obj->Content;echo '</br>';              //文字内容
+        // echo 'Content: '. $wx_id;echo '</br>';              //文字内容
+        // echo 'Content: '. $openid;echo '</br>';              //文字内容
+        // echo 'Content: '. $goodsInfo['name'];echo '</br>';              //文字内容
+        // echo 'Content: '. $PicUrl;echo '</br>';              //文字内容
+        // echo 'Content: '. $Url;echo '</br>';              //文字内容
+        //         die;
                 $response = '<xml>
                 <ToUserName><![CDATA['.$wx_id.']]></ToUserName>
                 <FromUserName><![CDATA['.$openid.']]></FromUserName>
                 <CreateTime>'.time().'</CreateTime>
                 <MsgType><![CDATA[news]]></MsgType>
-                <ArticleCount>"1"</ArticleCount>
+                <ArticleCount>1</ArticleCount>
                 <Articles>
                     <item>
                     <Title><![CDATA['.$goodsInfo['name'].']]></Title>
