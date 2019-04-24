@@ -40,7 +40,4 @@ class JssdkController extends Controller
 
         }
     }
-    public function imgs(){
-
-    }
 }
