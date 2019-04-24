@@ -151,7 +151,38 @@ class WeixinController extends Controller
         // 获取用户信息
         $user_url = 'https://api.weixin.qq.com/sns/userinfo?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
         $user_Info = json_decode(file_get_contents($user_url),true);
-        echo "<pre>";print_r($user_Info);echo "</pre>";
+        // echo "<pre>";print_r($user_Info);echo "</pre>";
+        // 根据openid判断用户是否存在
+        $local_user = WxUserModel::where(['openid'=>$openid])->first();
+        if($local_user){
+            echo '欢迎回来';die;
+            echo '<xml>
+            <ToUserName><![CDATA['.$openid.']]></ToUserName>
+            <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+            <CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType>
+            <Content><![CDATA['. '欢迎回来 '. $local_user['nickname'] .']]></Content>
+            </xml>';
+        }else{
+            // 获取用户信息
+            // $user =$this->getUserInfo($openid);
+            // print_r($user) ;die;
+            // 用户信息入库
+            $Info=[
+                'openid'=>$user_Info['openid'],
+                'nickname'=>$user_Info['nickname'],
+                'sex'=>$user_Info['sex'],
+                'headimgurl'=>$user_Info['headimgurl']
+            ];
+            $id = WxUserModel::insert($Info);
+            echo '欢迎访问此网页';die;
+            echo '<xml>
+            <ToUserName><![CDATA['.$openid.']]></ToUserName>
+            <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+            <CreateTime>'.time().'</CreateTime>
+            <MsgType><![CDATA[text]]></MsgType>
+            <Content><![CDATA['. '欢迎关注 '. $user['nickname'] .']]></Content>
+            </xml>';
+        }
     }
    
 }
