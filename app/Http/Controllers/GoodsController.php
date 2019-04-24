@@ -7,7 +7,7 @@ use App\Model\GoodsModel;
 use App\Model\GoodsLookModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
-
+use Illuminate\Support\Str;
 
 class GoodsController extends Controller
 {
