@@ -93,11 +93,13 @@ class WeixinController extends Controller
                 }
                 return $response_xml;
             }elseif(strpos($xml_obj->Content,"最新商品")!==false){
+                echo $xml_obj->Content;
+                echo (strpos($xml_obj->Content,"最新商品"));
                 $goodsInfo = GoodsModel::orderBy('id','desc')->first();
                 // echo "<pre>";print_r($goodsInfo);echo "</pre>";
                 // echo $goodsInfo['id'];
                 $PicUrl = "http://1809zhoubinbin.comcto.com/images/QQ图片20190107153840.jpg";
-                $Url = "http://1809zhoubinbin.comcto.com/goods/detail";
+                $Url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goodsInfo['id'];
         //         echo 'Content: '. $xml_obj->Content;echo '</br>';              //文字内容
         // echo 'Content: '. $wx_id;echo '</br>';              //文字内容
         // echo 'Content: '. $openid;echo '</br>';              //文字内容
@@ -106,8 +108,8 @@ class WeixinController extends Controller
         // echo 'Content: '. $Url;echo '</br>';              //文字内容
         //         die;
                 $response = '<xml>
-                <ToUserName><![CDATA['.$wx_id.']]></ToUserName>
-                <FromUserName><![CDATA['.$openid.']]></FromUserName>
+                <ToUserName><![CDATA['.$open_id.']]></ToUserName>
+                <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
                 <CreateTime>'.time().'</CreateTime>
                 <MsgType><![CDATA[news]]></MsgType>
                 <ArticleCount>1</ArticleCount>
@@ -120,7 +122,7 @@ class WeixinController extends Controller
                     </item>
                 </Articles>
                 </xml>';
-                echo $response;
+                return  $response;
             }
         }
     }
