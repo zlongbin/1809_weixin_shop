@@ -114,9 +114,23 @@
     </body>
 </html>
 <script>
-    window.onload=function(){
-        // if(location.href.indexOf("?xyz=")<0){
-        //     location.href=location.href+"?xyz="+Math.random();
-        // }
-    }
+    wx.config({
+        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: "{{$js_config['appId']}}", // 必填，公众号的唯一标识
+        timestamp: "{{$js_config['timestamp']}}", // 必填，生成签名的时间戳
+        nonceStr: "{{$js_config['nonceStr']}}", // 必填，生成签名的随机串
+        signature: "{{$js_config['signature']}}",// 必填，签名
+        jsApiList: ['updateAppMessageShareData'] // 必填，需要使用的JS接口列表
+    });
+    wx.ready(function(){
+        wx.updateAppMessageShareData({ 
+            title: '测试', // 分享标题
+            desc: '分享测试', // 分享描述
+            link: 'http://1809zhoubinbin.comcto.com', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: '/images/QQ图片20190107153840.jpg', // 分享图标
+            success: function () {
+            // 设置成功
+            }
+        })
+    })
 </script>
