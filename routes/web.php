@@ -43,5 +43,5 @@ Route::get('/js/test',"Weixin\JssdkController@jsTest");         //浏览历史
 Route::get('/js/getImg',"Weixin\JssdkController@getImg");         //浏览历史
 
 //微信事件推送
-Route::get('/weixin/valid',"Weixin\WeixinController@valid");         //浏览历史
-Route::post('/weixin/valid',"Weixin\WeixinController@wxEvent");         //浏览历史
+Route::get('/wx/valid',"Weixin\WeixinController@valid");         //浏览历史
+Route::post('/wx/valid',"Weixin\WeixinController@wxEvent");         //浏览历史
