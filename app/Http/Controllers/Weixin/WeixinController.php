@@ -108,7 +108,7 @@ class WeixinController extends Controller
         // echo 'Content: '. $Url;echo '</br>';              //文字内容
         //         die;
                 $response = '<xml>
-                <ToUserName><![CDATA['.$open_id.']]></ToUserName>
+                <ToUserName><![CDATA['.$openid.']]></ToUserName>
                 <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
                 <CreateTime>'.time().'</CreateTime>
                 <MsgType><![CDATA[news]]></MsgType>
