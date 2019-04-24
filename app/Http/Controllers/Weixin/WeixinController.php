@@ -41,7 +41,7 @@ class WeixinController extends Controller
                 <FromUserName><![CDATA['.$openid.']]></FromUserName>
                 <CreateTime>'.time().'</CreateTime>
                 <MsgType><![CDATA[text]]></MsgType>
-                <Content><![CDATA[你好]]></Content>
+                <Content><![CDATA["你好"]]></Content>
               </xml>';
                 // $response = '<xml>
                 // <ToUserName><![CDATA['.$wx_id.']]></ToUserName>
