@@ -26,6 +26,7 @@ class GoodsController extends Controller
      */
     public function detail(){
         $goods_id = $_GET['goods_id'];
+
         $sort_Info = $this->getSort($goods_id);
         $history_Info = $this->history($goods_id);
         // $goods = GoodsLookModel::where(['id'=>$goods_id])->first();
@@ -106,11 +107,11 @@ class GoodsController extends Controller
         $zadd = Redis::zAdd($redis_ss_history,$cache_Info['time'],$goods_id);            //有序集合记录  浏览排名
 
         $lists = Redis::zRevRange($redis_ss_history,0,9999999999,true);
-        echo "<pre>";print_r($lists);echo "</pre>";
+        // echo "<pre>";print_r($lists);echo "</pre>";
         foreach($lists as $k=>$v){
             // $goods_Info[] = GoodsModel::where(['id'=>$k])->first()->toArray();
             $goods_Info[] = Redis::hGetAll("h:goods_history:".$k.Auth::id());
-            Redis::hSet("h:goods_history:".$k.Auth::id(),'time',date());
+            // Redis::hSet("h:goods_history:".$k.Auth::id(),'time',date());
         }
         // var_dump($goods_Info);
         return $goods_Info;
