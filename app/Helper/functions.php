@@ -67,4 +67,30 @@ use Illuminate\Support\Facades\Redis;
 
         return $js_config;
     }
+        /**
+     * 获取网页授权AccessToken
+     */
+    function getWebAccessToken(){
+        $key = "response_Info";
+        $response_Info = Redis::get($key);
+        if($response_Info){
+            return  $response_Info;
+        }else{
+            //获取Access_Token
+            $web_access_token_url ='https://api.weixin.qq.com/sns/oauth2/access_token?appid='.env('WX_APP_ID').'&secret='.env('WX_APP_SECRET').'&code='.$code.'&grant_type=authorization_code';
+            $response = json_decode(file_get_contents($web_access_token_url),true);
+            // var_dump($response);die;
+            if(isset($response['access_token'])){
+                $response_Info = [
+                    'access_token' => $response['access_token'],
+                    'openid' => $response['openid']
+                ];
+                Redis::set($key,$response_Info); 
+                Redis::expire($key,3600);
+                return  $response_Info;
+            }else{
+                return false;
+            }
+        }
+    }
 ?>
