@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Redis;
     /**
      * 获取AccessToken
      */
-    function getAccessToken(){
+    function getAccessToken($code){
         $key = "wx_access_token";
         $access_token = Redis::get($key);
         if($access_token){

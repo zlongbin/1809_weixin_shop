@@ -148,7 +148,7 @@ class WeixinController extends Controller
         // 获取授权access_token
         // $access_token_url ='https://api.weixin.qq.com/sns/oauth2/access_token?appid='.env('WX_APP_ID').'&secret='.env('WX_APP_SECRET').'&code='.$code.'&grant_type=authorization_code';
         // $response = json_decode(file_get_contents($access_token_url),true);
-        $response_Info = getWebAccessToken();
+        $response_Info = getWebAccessToken($code);
         $access_token = $response_Info['access_token'];
         $openid = $response_Info['openid'];
         // $refresh_token = $response['refresh_token'];
