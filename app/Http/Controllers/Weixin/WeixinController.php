@@ -6,9 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\GoodsModel;
 use App\Model\WxUserModel;
-use App\Model\WebUserModel;
-use Illuminate\Support\Facades\Redis;
-
 
 class WeixinController extends Controller
 {
@@ -149,17 +146,14 @@ class WeixinController extends Controller
         $access_token_url ='https://api.weixin.qq.com/sns/oauth2/access_token?appid='.env('WX_APP_ID').'&secret='.env('WX_APP_SECRET').'&code='.$code.'&grant_type=authorization_code';
         $response = json_decode(file_get_contents($access_token_url),true);
         // echo "<pre>";print_r($response);echo "</pre>";
-        // $response_Info = getWebAccessToken($code);
-        // var_dump($response['access_token']);die;
-        // $access_token = $response['access_token'];
-        // echo $access_token;die;
-        // $openid = $response['openid'];
+        $access_token = $response['access_token'];
+        $openid = $response['openid'];
         // 获取用户信息
-        $user_url = 'https://api.weixin.qq.com/sns/userinfo?access_token='.$response['access_token'].'&openid='.$response['openid'].'&lang=zh_CN';
+        $user_url = 'https://api.weixin.qq.com/sns/userinfo?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
         $user_Info = json_decode(file_get_contents($user_url),true);
         // echo "<pre>";print_r($user_Info);echo "</pre>";
         // 根据openid判断用户是否存在
-        $wx_user = WebUserModel::where(['openid'=>$openid])->first();
+        $wx_user = WxUserModel::where(['openid'=>$openid])->first();
         if($wx_user){
             echo '欢迎回来';die;
         }else{
@@ -170,7 +164,7 @@ class WeixinController extends Controller
                 'sex'=>$user_Info['sex'],
                 'headimgurl'=>$user_Info['headimgurl']
             ];
-            $id = WebUserModel::insert($Info);
+            $id = WxUserModel::insert($Info);
             echo '欢迎访问此网页';die;
         }
     }
