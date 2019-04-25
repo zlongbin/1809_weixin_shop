@@ -81,21 +81,15 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    {{$goods_detail->name}}----{{$goods_detail->price}}
                 </div>
+                {{$goods_detail->name}}----{{$goods_detail->price}}
+
                 <div>
                 <table border=1>
-                    <tr>
-                        <td>商品</td>
-                        <td>浏览时间</td>
-                    </tr>
 
                 </table>
                 <table border=1>
-                    <tr>
-                        <td>商品</td>
-                        <td>浏览次数</td>
-                    </tr>
+ 
 
                 </table>
                 </div>
