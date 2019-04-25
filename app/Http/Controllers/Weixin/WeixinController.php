@@ -151,7 +151,7 @@ class WeixinController extends Controller
         echo "<pre>";print_r($response);echo "</pre>";
         // $response_Info = getWebAccessToken($code);
         $access_token = $response['access_token'];
-        echo $access_token;
+        // echo $access_token;
         $openid = $response['openid'];
         // $refresh_token = $response['refresh_token'];
         // // 刷新access_token
