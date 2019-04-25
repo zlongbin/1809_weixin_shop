@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Model\GoodsModel;
 use App\Model\WxUserModel;
 use App\Model\WebUserModel;
+use Illuminate\Support\Facades\Redis;
 
 
 class WeixinController extends Controller
