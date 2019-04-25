@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\GoodsModel;
 use App\Model\WxUserModel;
+use App\Model\WebUserModel;
 
 class WeixinController extends Controller
 {
@@ -153,7 +154,7 @@ class WeixinController extends Controller
         $user_Info = json_decode(file_get_contents($user_url),true);
         // echo "<pre>";print_r($user_Info);echo "</pre>";
         // 根据openid判断用户是否存在
-        $wx_user = WxUserModel::where(['openid'=>$openid])->first();
+        $wx_user = WebUserModel::where(['openid'=>$openid])->first();
         if($wx_user){
             echo '欢迎回来';die;
         }else{
@@ -164,7 +165,7 @@ class WeixinController extends Controller
                 'sex'=>$user_Info['sex'],
                 'headimgurl'=>$user_Info['headimgurl']
             ];
-            $id = WxUserModel::insert($Info);
+            $id = WebUserModel::insert($Info);
             echo '欢迎访问此网页';die;
         }
     }
