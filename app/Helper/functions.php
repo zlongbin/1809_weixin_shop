@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Redis;
     /**
      * 获取AccessToken
      */
-    function getAccessToken($code){
+    function getAccessToken(){
         $key = "wx_access_token";
         $access_token = Redis::get($key);
         if($access_token){
@@ -70,7 +70,7 @@ use Illuminate\Support\Facades\Redis;
         /**
      * 获取网页授权AccessToken
      */
-    function getWebAccessToken(){
+    function getWebAccessToken($code){
         $key = "response_Info";
         $response_Info = Redis::get($key);
         if($response_Info){
