@@ -46,6 +46,7 @@ class GoodsController extends Controller
         $goods_detail = GoodsModel::where(['id'=>$goods_id])->first();
         //带参数的二维码
         $ticket = getStrTicket('goods');
+        echo $ticket;
         // echo "<pre>";print_r($goods);echo "</pre>";
         $js_config = getJsConfig();
         $data = [
