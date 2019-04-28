@@ -53,6 +53,11 @@ class QRcodeController extends Controller
         $openid = $xml_obj->FromUserName;          //用户OpenID
         $event = $xml_obj->Event;                  //事件类型
         $msg_type = $xml_obj->MsgType;             // 消息类型
+
+        $goodsInfo = GoodsModel::orderBy('id','desc')->first();
+        $PicUrl = "http://1809zhoubinbin.comcto.com/images/QQ图片20190107153840.jpg";
+        $Url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goodsInfo['id'];
+        
         if($event=='subscribe'){
             // 根据openid判断用户是否存在
             $local_user = WxUserModel::where(['openid'=>$openid])->first();
@@ -117,11 +122,6 @@ class QRcodeController extends Controller
             }elseif(strpos($xml_obj->Content,"最新商品")!==false){
                 echo $xml_obj->Content;
                 echo (strpos($xml_obj->Content,"最新商品"));
-                $goodsInfo = GoodsModel::orderBy('id','desc')->first();
-                // echo "<pre>";print_r($goodsInfo);echo "</pre>";
-                // echo $goodsInfo['id'];
-                $PicUrl = "http://1809zhoubinbin.comcto.com/images/QQ图片20190107153840.jpg";
-                $Url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goodsInfo['id'];
         //         echo 'Content: '. $xml_obj->Content;echo '</br>';              //文字内容
         // echo 'Content: '. $wx_id;echo '</br>';              //文字内容
         // echo 'Content: '. $openid;echo '</br>';              //文字内容
