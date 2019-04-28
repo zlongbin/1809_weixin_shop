@@ -26,7 +26,7 @@ class WeixinController extends Controller
         // echo 'CreateTime: '. $xml_obj->CreateTime;echo '</br>';        // 时间戳
         // echo 'MsgType: '. $xml_obj->MsgType;echo '</br>';              // 消息类型
         // echo 'Event: '. $xml_obj->Event;echo '</br>';                  // 事件类型
-        // echo 'EventKey: '. $xml_obj->EventKey;echo '</br>';
+        echo 'EventKey: '. $xml_obj->EventKey;echo '</br>';
         // echo 'Content: '. $xml_obj->Content;echo '</br>';              //文字内容
         
         $wx_id = $xml_obj->ToUserName;             // 公众号ID
@@ -47,7 +47,7 @@ class WeixinController extends Controller
                 //扫码关注事件（带参数的二维码）
                 $PicUrl = "http://1809zhoubinbin.comcto.com/images/QQ图片20190107153840.jpg";
                 $Url = "http://1809zhoubinbin.comcto.com";
-                if(strpos($eventkey,"qrscene_")){            //用户未关注
+                if(strpos($eventkey,"key")){            //用户未关注
                     $response = '<xml>
                     <ToUserName><![CDATA['.$openid.']]></ToUserName>
                     <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
