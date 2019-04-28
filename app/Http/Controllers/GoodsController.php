@@ -8,6 +8,7 @@ use App\Model\GoodsLookModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
+use GuzzleHttp\Client;
 
 class GoodsController extends Controller
 {
