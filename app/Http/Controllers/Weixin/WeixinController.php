@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Model\GoodsModel;
 use App\Model\WxUserModel;
 use App\Model\WebUserModel;
-
+use App\Model\TmpWxUserModel;
 
 class WeixinController extends Controller
 {
