@@ -26,7 +26,7 @@ class WeixinController extends Controller
         // echo 'CreateTime: '. $xml_obj->CreateTime;echo '</br>';        // 时间戳
         // echo 'MsgType: '. $xml_obj->MsgType;echo '</br>';              // 消息类型
         // echo 'Event: '. $xml_obj->Event;echo '</br>';                  // 事件类型
-        echo 'EventKey: '. $xml_obj->EventKey;echo '</br>';
+        // echo 'EventKey: '. $xml_obj->EventKey;echo '</br>';
         // echo 'Content: '. $xml_obj->Content;echo '</br>';              //文字内容
         
         $wx_id = $xml_obj->ToUserName;             // 公众号ID
@@ -47,39 +47,22 @@ class WeixinController extends Controller
                 //扫码关注事件（带参数的二维码）
                 $PicUrl = "http://1809zhoubinbin.comcto.com/images/QQ图片20190107153840.jpg";
                 $Url = "http://1809zhoubinbin.comcto.com";
-                if(is_int($eventkey)==false){            //用户未关注
-                    $response = '<xml>
-                    <ToUserName><![CDATA['.$openid.']]></ToUserName>
-                    <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
-                    <CreateTime>'.time().'</CreateTime>
-                    <MsgType><![CDATA[news]]></MsgType>
-                    <ArticleCount>1</ArticleCount>
-                    <Articles>
-                        <item>
-                        <Title><![CDATA[欢迎新用户]]></Title>
-                        <Description><![CDATA[]]></Description>
-                        <PicUrl><![CDATA['.$PicUrl.']]></PicUrl>
-                        <Url><![CDATA['.$Url.']]></Url>
-                        </item>
-                    </Articles>
-                    </xml>';
-                }else{            //用户已关注
-                    $response = '<xml>
-                    <ToUserName><![CDATA['.$openid.']]></ToUserName>
-                    <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
-                    <CreateTime>'.time().'</CreateTime>
-                    <MsgType><![CDATA[news]]></MsgType>
-                    <ArticleCount>1</ArticleCount>
-                    <Articles>
-                        <item>
-                        <Title><![CDATA[欢迎回来]]></Title>
-                        <Description><![CDATA["烫死你"]]></Description>
-                        <PicUrl><![CDATA['.$PicUrl.']]></PicUrl>
-                        <Url><![CDATA['.$Url.']]></Url>
-                        </item>
-                    </Articles>
-                    </xml>';
-                }
+                //用户未关注
+                $response = '<xml>
+                <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+                <CreateTime>'.time().'</CreateTime>
+                <MsgType><![CDATA[news]]></MsgType>
+                <ArticleCount>1</ArticleCount>
+                <Articles>
+                    <item>
+                    <Title><![CDATA[欢迎新用户]]></Title>
+                    <Description><![CDATA[]]></Description>
+                    <PicUrl><![CDATA['.$PicUrl.']]></PicUrl>
+                    <Url><![CDATA['.$Url.']]></Url>
+                    </item>
+                </Articles>
+                </xml>';
                 return  $response;
             }else{
                 //关注事件
@@ -113,6 +96,35 @@ class WeixinController extends Controller
                     </xml>';
                 }
             }
+        }elseif($event=='SCAN'){
+            $tmp_user = TmpWxUserModel::where(['openid'=>$openid])->first();
+            if(!$tmp_user){
+                 // 用户信息入库
+                 $user_Info=[
+                    'openid'=>$openid
+                ];
+                $id = TmpWxUserModel::insert($user_Info);
+            }
+            //扫码关注事件（带参数的二维码）
+            $PicUrl = "http://1809zhoubinbin.comcto.com/images/QQ图片20190107153840.jpg";
+            $Url = "http://1809zhoubinbin.comcto.com";
+            //用户已关注
+            $response = '<xml>
+            <ToUserName><![CDATA['.$openid.']]></ToUserName>
+            <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+            <CreateTime>'.time().'</CreateTime>
+            <MsgType><![CDATA[news]]></MsgType>
+            <ArticleCount>1</ArticleCount>
+            <Articles>
+                <item>
+                <Title><![CDATA[欢迎回来]]></Title>
+                <Description><![CDATA["烫死你"]]></Description>
+                <PicUrl><![CDATA['.$PicUrl.']]></PicUrl>
+                <Url><![CDATA['.$Url.']]></Url>
+                </item>
+            </Articles>
+            </xml>';
+            return $response;
         }elseif($msg_type=='text'){
             if(strpos($xml_obj->Content,"+天气")){
                 $city=explode('+',$xml_obj->Content)[0];
