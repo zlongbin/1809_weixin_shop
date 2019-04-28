@@ -47,7 +47,7 @@ class WeixinController extends Controller
                 //扫码关注事件（带参数的二维码）
                 $PicUrl = "http://1809zhoubinbin.comcto.com/images/QQ图片20190107153840.jpg";
                 $Url = "http://1809zhoubinbin.comcto.com";
-                if(strpos($eventkey,"key")){            //用户未关注
+                if(is_int($eventkey)==false){            //用户未关注
                     $response = '<xml>
                     <ToUserName><![CDATA['.$openid.']]></ToUserName>
                     <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
