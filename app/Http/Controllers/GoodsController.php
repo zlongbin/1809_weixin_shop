@@ -43,13 +43,16 @@ class GoodsController extends Controller
         //     GoodsLookModel::insertGetId($look);
         // }
         $goods_detail = GoodsModel::where(['id'=>$goods_id])->first();
+        //带参数的二维码
+        $ticket = getStrTicket('goods');
         // echo "<pre>";print_r($goods);echo "</pre>";
         $js_config = getJsConfig();
         $data = [
             'goods_detail' => $goods_detail,
             'history_Info' =>$history_Info,
             'sort_Info' => $sort_Info,
-            'js_config' => $js_config
+            'js_config' => $js_config,
+            'ticket' => $ticket
         ];
         return view('goods/goodsDetail',$data);
     }

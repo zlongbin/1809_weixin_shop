@@ -1,5 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Redis;
+use GuzzleHttp\Client;
+
 
     /**
      * 获取AccessToken
@@ -92,5 +94,26 @@ use Illuminate\Support\Facades\Redis;
                 return false;
             }
         }
+    }
+    /**
+     * 获取带参数的二维码(sence_str)
+     */
+    function getStrTicket($sence_str){
+        $url ="https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=".getAccessToken();
+        $json = [
+            'expire_seconds' => 2592000,
+            'action_name' => 'QR_STR_SCENE',
+            'action_info' => ['scene' => ['sence_str' => $sence_str]]
+        ];
+        $json_file = json_encode($json,JSON_UNESCAPED_UNICODE);
+        $client = new Client;
+        $response = $client ->request('POST',$url ,[
+            'body'=>$json_file
+        ]);
+        $body = $response -> getBody();
+        $json = json_decode($body,true);
+        $ticket = UrlEncode($json['ticket']);
+        $ticket_url = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=".$ticket;
+        return $ticket_url;
     }
 ?>

@@ -89,9 +89,12 @@
 
                 </table>
                 <table border=1>
- 
+
 
                 </table>
+                <div>
+                    <img src="{{$ticket}}" alt="">
+                </div>
                 </div>
             </div>
         </div>

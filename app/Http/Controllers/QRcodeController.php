@@ -12,26 +12,7 @@ use GuzzleHttp\Client;
 
 class QRcodeController extends Controller
 {
-    public function ticket(){
-        // echo getAccessToken();die;
-        $url ="https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=".getAccessToken();
-        // $json = {"expire_seconds": 604800,
-        //     "action_name": "QR_SCENE",
-        //     "action_info": {"scene": {"scene_id": 123}}
-        // };
-        $json = [
-            'expire_seconds' => 2592000,
-            'action_name' => 'QR_SCENE',
-            'action_info' => ['scene' => ['sence_id' => 1]]
-        ];
-        $json_file = json_encode($json);
-        echo $json_file;
-        $client = new Client;
-        $response = $client ->request('POST',$url ,$json);
-        $body = $response -> getBody();
-        $json = json_decode($body,true);
-        echo "<pre>";print_r($json);echo "</pre>";
-    }
+
     public function valid(){
         echo $_GET['echostr'];
     }
@@ -57,7 +38,7 @@ class QRcodeController extends Controller
         $goodsInfo = GoodsModel::orderBy('id','desc')->first();
         $PicUrl = "http://1809zhoubinbin.comcto.com/images/QQ图片20190107153840.jpg";
         $Url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goodsInfo['id'];
-        
+
         if($event=='subscribe'){
             // 根据openid判断用户是否存在
             $local_user = WxUserModel::where(['openid'=>$openid])->first();
