@@ -1,17 +1,37 @@
 <?php
 
-namespace App\Http\Controllers\Weixin;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Model\GoodsModel;
-use App\Model\WxUserModel;
-use App\Model\WebUserModel;
+use App\Model\GoodsLookModel;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Str;
+use GuzzleHttp\Client;
 
-
-class WeixinController extends Controller
+class QRcodeController extends Controller
 {
-    //
+    public function ticket(){
+        // echo getAccessToken();die;
+        $url ="https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=".getAccessToken();
+        // $json = {"expire_seconds": 604800,
+        //     "action_name": "QR_SCENE",
+        //     "action_info": {"scene": {"scene_id": 123}}
+        // };
+        $json = [
+            'expire_seconds' => 2592000,
+            'action_name' => 'QR_SCENE',
+            'action_info' => ['scene' => ['sence_id' => 1]]
+        ];
+        $json_file = json_encode($json);
+        echo $json_file;
+        $client = new Client;
+        $response = $client ->request('POST',$url ,$json);
+        $body = $response -> getBody();
+        $json = json_decode($body,true);
+        echo "<pre>";print_r($json);echo "</pre>";
+    }
     public function valid(){
         echo $_GET['echostr'];
     }
@@ -21,13 +41,13 @@ class WeixinController extends Controller
         $str = $time . $content ."\n";
         file_put_contents("logs/weixin_event.log",$str,FILE_APPEND);
         $xml_obj = simplexml_load_string($content);
-        echo 'ToUserName: '. $xml_obj->ToUserName;echo '</br>';        // 公众号ID
-        echo 'FromUserName: '. $xml_obj->FromUserName;echo '</br>';    // 用户OpenID
-        echo 'CreateTime: '. $xml_obj->CreateTime;echo '</br>';        // 时间戳
-        echo 'MsgType: '. $xml_obj->MsgType;echo '</br>';              // 消息类型
-        echo 'Event: '. $xml_obj->Event;echo '</br>';                  // 事件类型
-        echo 'EventKey: '. $xml_obj->EventKey;echo '</br>';
-        echo 'Content: '. $xml_obj->Content;echo '</br>';              //文字内容
+        // echo 'ToUserName: '. $xml_obj->ToUserName;echo '</br>';        // 公众号ID
+        // echo 'FromUserName: '. $xml_obj->FromUserName;echo '</br>';    // 用户OpenID
+        // echo 'CreateTime: '. $xml_obj->CreateTime;echo '</br>';        // 时间戳
+        // echo 'MsgType: '. $xml_obj->MsgType;echo '</br>';              // 消息类型
+        // echo 'Event: '. $xml_obj->Event;echo '</br>';                  // 事件类型
+        // echo 'EventKey: '. $xml_obj->EventKey;echo '</br>';
+        // echo 'Content: '. $xml_obj->Content;echo '</br>';              //文字内容
         
         $wx_id = $xml_obj->ToUserName;             // 公众号ID
         $openid = $xml_obj->FromUserName;          //用户OpenID
@@ -126,48 +146,6 @@ class WeixinController extends Controller
                 </xml>';
                 return  $response;
             }
-        }
-    }
-    // 获取微信用户信息
-    public function getUserInfo($openid){
-        // $openid='od-A-1FwnuCU3XUp3HU6wtIuDw48';
-        $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.getAccessToken().'&openid='.$openid.'&lang=zh_CN';
-        $data = file_get_contents($url);
-        $user = json_decode($data,true);
-        return $user;
-    }
-    public function wxWeb(){
-        $redirect_uri = urlEncode('http://1809zhoubinbin.comcto.com/wxweb/getu');
-        var_dump($redirect_uri);
-        $url =  'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APP_ID').'&redirect_uri='.$redirect_uri.'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
-        echo $url;
-    }
-    public function getU(){
-        $code = $_GET['code'];
-        // 获取授权access_token
-        $access_token_url ='https://api.weixin.qq.com/sns/oauth2/access_token?appid='.env('WX_APP_ID').'&secret='.env('WX_APP_SECRET').'&code='.$code.'&grant_type=authorization_code';
-        $response = json_decode(file_get_contents($access_token_url),true);
-        // echo "<pre>";print_r($response);echo "</pre>";
-        $access_token = $response['access_token'];
-        $openid = $response['openid'];
-        // 获取用户信息
-        $user_url = 'https://api.weixin.qq.com/sns/userinfo?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
-        $user_Info = json_decode(file_get_contents($user_url),true);
-        // echo "<pre>";print_r($user_Info);echo "</pre>";
-        // 根据openid判断用户是否存在
-        $wx_user = WebUserModel::where(['openid'=>$openid])->first();
-        if($wx_user){
-            echo '欢迎回来';die;
-        }else{
-            // 用户信息入库
-            $Info=[
-                'openid'=>$user_Info['openid'],
-                'nickname'=>$user_Info['nickname'],
-                'sex'=>$user_Info['sex'],
-                'headimgurl'=>$user_Info['headimgurl']
-            ];
-            $id = WebUserModel::insert($Info);
-            echo '欢迎访问此网页';die;
         }
     }
 }

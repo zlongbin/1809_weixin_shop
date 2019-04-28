@@ -4,77 +4,57 @@ namespace App\Admin\Controllers;
 
 use App\Model\MediaModel;
 use App\Http\Controllers\Controller;
+use GuzzleHttp\Client;
+use Illuminate\Http\Request;
+use Encore\Admin\Controllers\HasResourceActions;
+use Illuminate\Support\Str;
 
 class MediaController extends Controller
 {
+    use HasResourceActions;
+    
     public function add(){
+        return view('admin/media_add');
+        
+    }
+    public function addDo(Request $request){
+        // echo "<pre>";print_r($request->all());echo "</pre>";
+        // die;
+        $img_file = $request->file('img');     //接收文件
+        $img_orign_name = $img_file->getClientOriginalName();     //文件名
+        // echo "<pre>";print_r($img_orign_name);echo "</pre>";
+        $file_ext = $img_file->getClientOriginalExtension();       //文件类型
+        // echo "<pre>";print_r($file_ext);echo "</pre>";
+        $new_file_name = 'lb'.date('Y-m-d').Str::random(10).'.'.$file_ext;      //文件名
+        $save_file_path = $request->file('img')->storeAs('admin_media',$new_file_name);    //返回保存成功之后的路径
+        // echo "<pre>";print_r($save_file_path);echo "</pre>";
+        // die;
         // echo 'sa';
         $access_token = getAccessToken();
         // echo $access_token;
-        $url = 'https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=TYPE';
-        return view('admin/aaa');
-    }
-    /*
-    * 执行文件上传
-    * */
-    public function prUploadsDo(Request $request){
-        $rp_tatil = $request->input('rp_tatil',null);
-        $type = $request->input('rp_type',null);
-        $rp_desc = $request->input('rp_desc',null);
-        $time     = time();
-        if($request->hasFile('file')){
-            $file = $request->file;
-            $re = MaterialModel::upLoadsFile($file);
-            $imgpath = $re['imgpath'];
-            $data = $re['data'];
-            $count = strpos($data,'/');
-            $data = substr($data,0,$count);
-    //            print_r($data);die;
-
-            $arr = [
-                'media' => new \CURLFile(realpath($imgpath))
-            ];
-            $url    = "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=".$this->accessToken()."&type=$data";
-            $objurl = new \url();
-            $json   = $objurl -> sendPost($url,$arr);
-
-            //存入数据库
-            $jsonData = json_decode($json,true);
-            $media_id = $jsonData['media_id'];
-            $rp_url = $jsonData['url'];
-
-
-            $data = [
-                'rp_type'     => $type,
-                'rp_tatil'    => $rp_tatil,
-                'rp_desc'     => $rp_desc,
-                'rp_url'      => $rp_url,
-                'media_id'    => $media_id,
-                'rp_upload'   => $imgpath,
-                'create_time' => $time
-            ];
-            $res = RpmaterialModel::insertGetId($data);
-            if($res){
-                echo ('添加成功');
-            }else{
-                echo ('添加失败');
-            }
+        $url = 'https://api.weixin.qq.com/cgi-bin/media/upload?access_token='.$access_token.'&type=image';
+        $client = new Client;
+        $response = $client->request('POST', $url, [
+            'multipart' => [
+                [
+                    'name'     => 'img',
+                    'contents' => fopen($save_file_path, 'r')
+                ],
+            ]
+        ]);
+        $body = $response -> getBody();
+        $json = json_decode($body,true);
+        echo "<pre>";print_r($json);echo "</pre>";
+        $data=[
+            'media_id'=>$json['media_id'],
+            'add_time'=>time(),
+            'type'=>$json['type']
+        ];
+        $res=MediaModel::insertGetId($data);
+        if($res){
+            echo '添加成功';
         }else{
-            $data = [
-                'rp_type'     => $type,
-                'rp_tatil'    => $rp_tatil,
-                'rp_desc'     => $rp_desc,
-                'rp_url'      => null,
-                'media_id'    => null,
-                'rp_upload'   => null,
-                'create_time' => $time
-            ];
-            $res = RpmaterialModel::insertGetId($data);
-            if($res){
-                echo ('添加成功');
-            }else{
-                echo ('添加失败');
-            }
+            echo '添加失败';
         }
     }
 }

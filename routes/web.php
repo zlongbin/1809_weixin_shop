@@ -52,3 +52,6 @@ Route::get('/crontab/del_orders',"CrontabController@delOrder");         //删除
 //网页授权
 Route::get('/wxweb',"Weixin\WeixinController@wxWeb");         //删除过期订单
 Route::get('/wxweb/getu',"Weixin\WeixinController@getU");         //删除过期订单
+
+//生成二维码
+Route::get('/ticket',"QRcodeController@ticket");         //删除过期订单

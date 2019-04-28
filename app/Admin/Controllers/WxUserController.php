@@ -9,6 +9,9 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use GuzzleHttp\Client;
+use Illuminate\Http\Request;
+
 
 class WxUserController extends Controller
 {
@@ -124,5 +127,37 @@ class WxUserController extends Controller
         $form->text('headimgurl', 'Headimgurl');
 
         return $form;
+    }
+    public function a(){
+        return view('admin/aaa');
+    }
+    protected function textGroup(Request $resquest)
+    {
+        $content=$resquest->input("content");
+        echo $content;
+        $url='https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token='.getAccessToken();
+        //请求微信接口
+        $client=new Client(['base_uro'=>$url]);
+        $data=[
+            "touser"=>[
+                'od-A-1FwnuCU3XUp3HU6wtIuDw48',
+                'od-A-1DKQ7CQXL5f7Hfek3H198ZA'
+            ],
+            'text'=>[
+                'content'=>$content
+            ],
+            'msgtype'=>'text'
+
+        ];
+        $response=$client->request('post',$url,['body'=>json_encode($data,JSON_UNESCAPED_UNICODE)]);
+        //解析接口返回信息
+        $response_arr=json_decode($response->getBody(),true);
+        var_dump($response_arr);
+        if($response_arr['errcode']==0){
+            echo "群发成功";
+        }else{
+            echo "群发失败，请重试";
+            echo "<br/>";
+        }
     }
 }

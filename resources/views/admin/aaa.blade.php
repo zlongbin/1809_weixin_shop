@@ -7,8 +7,9 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="">
-        <input type="file">
+    <form action="/admin/group/text" method="post">
+        <input type="text" name="content">
+        <input type="submit" value ="提交">
     </form>
 </body>
 </html>
