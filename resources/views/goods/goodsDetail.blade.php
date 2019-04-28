@@ -92,14 +92,17 @@
 
 
                 </table>
-                <div>
-                    <img src="{{$ticket}}" alt="">
-                </div>
+                <div id="qrcode"></div>
                 </div>
             </div>
         </div>
     </body>
 </html>
+<script src="/js/jquery/jquery-1.8.3.min.js"></script>
+<script src="/js/wx/qrcode.js"></script>
+<script type="text/javascript">
+    new QRCode(document.getElementById("qrcode"), "{{$curl}}");
+</script>
 <script>
     wx.config({
         debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。

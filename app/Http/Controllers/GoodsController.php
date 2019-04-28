@@ -45,16 +45,19 @@ class GoodsController extends Controller
         // }
         $goods_detail = GoodsModel::where(['id'=>$goods_id])->first();
         //带参数的二维码
-        $ticket = getStrTicket('goods');
-        echo $ticket;
+        // $ticket = getStrTicket('goods');
+        // echo $ticket;
         // echo "<pre>";print_r($goods);echo "</pre>";
+        $curl = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];      //当前网页URL
+            // echo $curl;
         $js_config = getJsConfig();
         $data = [
             'goods_detail' => $goods_detail,
             'history_Info' =>$history_Info,
             'sort_Info' => $sort_Info,
             'js_config' => $js_config,
-            'ticket' => $ticket
+            // 'ticket' => $ticket
+            'curl' => $curl
         ];
         return view('goods/goodsDetail',$data);
     }
