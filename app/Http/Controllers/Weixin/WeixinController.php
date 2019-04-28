@@ -33,35 +33,85 @@ class WeixinController extends Controller
         $openid = $xml_obj->FromUserName;          //用户OpenID
         $event = $xml_obj->Event;                  //事件类型
         $msg_type = $xml_obj->MsgType;             // 消息类型
+        $eventkey = $xml_obj->EventKey;            //事件key值
         if($event=='subscribe'){
-            // 根据openid判断用户是否存在
-            $local_user = WxUserModel::where(['openid'=>$openid])->first();
-            if($local_user){
-                echo '<xml>
-                <ToUserName><![CDATA['.$openid.']]></ToUserName>
-                <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
-                <CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType>
-                <Content><![CDATA['. '欢迎回来 '. $local_user['nickname'] .']]></Content>
-                </xml>';
+            if($eventkey==true){
+                $tmp_user = TmpWxUserModel::where(['openid'=>$openid])->first();
+                if(!$tmp_user){
+                     // 用户信息入库
+                     $user_Info=[
+                        'openid'=>$openid
+                    ];
+                    $id = TmpWxUserModel::insert($user_Info);
+                }
+                //扫码关注事件（带参数的二维码）
+                $PicUrl = "http://1809zhoubinbin.comcto.com/images/QQ图片20190107153840.jpg";
+                $Url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goodsInfo['id'];
+                if($event=='subscribe'){            //用户未关注
+                    $response = '<xml>
+                    <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                    <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+                    <CreateTime>'.time().'</CreateTime>
+                    <MsgType><![CDATA[news]]></MsgType>
+                    <ArticleCount>1</ArticleCount>
+                    <Articles>
+                        <item>
+                        <Title><![CDATA[欢迎新用户]]></Title>
+                        <Description><![CDATA[]]></Description>
+                        <PicUrl><![CDATA['.$PicUrl.']]></PicUrl>
+                        <Url><![CDATA['.$Url.']]></Url>
+                        </item>
+                    </Articles>
+                    </xml>';
+                }elseif($event=='SCAN'){            //用户已关注
+                    $response = '<xml>
+                    <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                    <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+                    <CreateTime>'.time().'</CreateTime>
+                    <MsgType><![CDATA[news]]></MsgType>
+                    <ArticleCount>1</ArticleCount>
+                    <Articles>
+                        <item>
+                        <Title><![CDATA[欢迎回来]]></Title>
+                        <Description><![CDATA["烫死你"]]></Description>
+                        <PicUrl><![CDATA['.$PicUrl.']]></PicUrl>
+                        <Url><![CDATA['.$Url.']]></Url>
+                        </item>
+                    </Articles>
+                    </xml>';
+                }
+                return  $response;
             }else{
-                // 获取用户信息
-                $user =$this->getUserInfo($openid);
-                // print_r($user) ;die;
-                // 用户信息入库
-                $user_Info=[
-                    'openid'=>$user['openid'],
-                    'nickname'=>$user['nickname'],
-                    'sex'=>$user['sex'],
-                    'headimgurl'=>$user['headimgurl']
-                ];
-                $id = WxUserModel::insert($user_Info);
-                echo '<xml>
-                <ToUserName><![CDATA['.$openid.']]></ToUserName>
-                <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
-                <CreateTime>'.time().'</CreateTime>
-                <MsgType><![CDATA[text]]></MsgType>
-                <Content><![CDATA['. '欢迎关注 '. $user['nickname'] .']]></Content>
-                </xml>';
+                //关注事件
+                // 根据openid判断用户是否存在
+                $local_user = WxUserModel::where(['openid'=>$openid])->first();
+                if($local_user){
+                    echo '<xml>
+                    <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                    <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+                    <CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType>
+                    <Content><![CDATA['. '欢迎回来 '. $local_user['nickname'] .']]></Content>
+                    </xml>';
+                }else{
+                    // 获取用户信息
+                    $user =$this->getUserInfo($openid);
+                    // print_r($user) ;die;
+                    // 用户信息入库
+                    $user_Info=[
+                        'openid'=>$user['openid'],
+                        'nickname'=>$user['nickname'],
+                        'sex'=>$user['sex'],
+                        'headimgurl'=>$user['headimgurl']
+                    ];
+                    $id = WxUserModel::insert($user_Info);
+                    echo '<xml>
+                    <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                    <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+                    <CreateTime>'.time().'</CreateTime>
+                    <MsgType><![CDATA[text]]></MsgType>
+                    <Content><![CDATA['. '欢迎关注 '. $user['nickname'] .']]></Content>
+                    </xml>';
+                }
             }
         }elseif($msg_type=='text'){
             if(strpos($xml_obj->Content,"+天气")){

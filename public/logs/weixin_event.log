@@ -170,3 +170,43 @@
 <Content><![CDATA["最品"]]></Content>
 <MsgId>22267922250759760</MsgId>
 </xml>
+2019-04-28 16:44:14<xml><ToUserName><![CDATA[gh_6a4f70b5eed6]]></ToUserName>
+<FromUserName><![CDATA[od-A-1FwnuCU3XUp3HU6wtIuDw48]]></FromUserName>
+<CreateTime>1556440355</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[SCAN]]></Event>
+<EventKey><![CDATA[0]]></EventKey>
+<Ticket><![CDATA[gQHx8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyNEprcFFlVHdjLWsxLVBBSU5zMVoAAgSzV8VcAwQAjScA]]></Ticket>
+</xml>
+2019-04-28 16:44:47<xml><ToUserName><![CDATA[gh_6a4f70b5eed6]]></ToUserName>
+<FromUserName><![CDATA[od-A-1FwnuCU3XUp3HU6wtIuDw48]]></FromUserName>
+<CreateTime>1556440355</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[SCAN]]></Event>
+<EventKey><![CDATA[0]]></EventKey>
+<Ticket><![CDATA[gQHx8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyNEprcFFlVHdjLWsxLVBBSU5zMVoAAgSzV8VcAwQAjScA]]></Ticket>
+</xml>
+2019-04-28 16:45:25<xml><ToUserName><![CDATA[gh_6a4f70b5eed6]]></ToUserName>
+<FromUserName><![CDATA[od-A-1FwnuCU3XUp3HU6wtIuDw48]]></FromUserName>
+<CreateTime>1556440355</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[SCAN]]></Event>
+<EventKey><![CDATA[0]]></EventKey>
+<Ticket><![CDATA[gQHx8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyNEprcFFlVHdjLWsxLVBBSU5zMVoAAgSzV8VcAwQAjScA]]></Ticket>
+</xml>
+2019-04-28 16:45:56<xml><ToUserName><![CDATA[gh_6a4f70b5eed6]]></ToUserName>
+<FromUserName><![CDATA[od-A-1FwnuCU3XUp3HU6wtIuDw48]]></FromUserName>
+<CreateTime>1556440355</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[subscribe]]></Event>
+<EventKey><![CDATA[0]]></EventKey>
+<Ticket><![CDATA[gQHx8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyNEprcFFlVHdjLWsxLVBBSU5zMVoAAgSzV8VcAwQAjScA]]></Ticket>
+</xml>
+2019-04-28 16:46:31<xml><ToUserName><![CDATA[gh_6a4f70b5eed6]]></ToUserName>
+<FromUserName><![CDATA[od-A-1FwnuCU3XUp3HU6wtIuDw48]]></FromUserName>
+<CreateTime>1556440355</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[subscribe]]></Event>
+<EventKey><![CDATA[0]]></EventKey>
+<Ticket><![CDATA[gQHx8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyNEprcFFlVHdjLWsxLVBBSU5zMVoAAgSzV8VcAwQAjScA]]></Ticket>
+</xml>
