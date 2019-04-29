@@ -271,7 +271,7 @@ class WeixinController extends Controller
         $goods = GoodsModel::where(['id' => rand(1,$count)])->first();
         $url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goods['id'];
         $menu_url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".getAccessToken();
-        $response_url =  'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APP_ID').'&redirect_uri='.urlEncode($Url).'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+        $response_url =  'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APP_ID').'&redirect_uri='.urlEncode($url).'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
         $json_arr = [
             "button" => [
                 [
