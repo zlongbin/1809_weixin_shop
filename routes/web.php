@@ -54,8 +54,8 @@ Route::post('/wx/valid',"Weixin\WeixinController@wxEvent");         //事件推�
 Route::get('/crontab/del_orders',"CrontabController@delOrder");         //删除过期订单
 
 //网页授权
-Route::get('/wxweb',"Weixin\WeixinController@wxWeb");         //删除过期订单
-Route::get('/wxweb/getu',"Weixin\WeixinController@getU");         //删除过期订单
+Route::get('/wxweb',"Weixin\WeixinController@wxWeb");         //链接
+Route::get('/wxweb/getu',"Weixin\WeixinController@getU");         //网页授权
 
 //生成二维码
 Route::get('/ticket',"QRcodeController@ticket");         //删除过期订单
