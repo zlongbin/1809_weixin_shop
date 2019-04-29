@@ -279,9 +279,9 @@ class WeixinController extends Controller
                 ]
             ]
         ];
-        $json = json_encode($json_arr,JSON_UNESCAPED_UNICODE);
+        $str = json_encode($json_arr,JSON_UNESCAPED_UNICODE);
         $client = new Client;
-        $response = $client -> request('post',$url,$json);
+        $response = $client -> request('post',$url,['body' => $str]);
         $body = $response->getBody();
         $arr = json_decode($body,true);
         echo "<pre>";print_r($arr);echo "</pre>";
