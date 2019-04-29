@@ -8,6 +8,7 @@ use App\Model\GoodsModel;
 use App\Model\WxUserModel;
 use App\Model\WebUserModel;
 use App\Model\TmpWxUserModel;
+use GuzzleHttp\Client;
 
 class WeixinController extends Controller
 {
