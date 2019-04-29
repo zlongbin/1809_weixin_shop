@@ -26,7 +26,7 @@ class MediaController extends Controller
         $file_ext = $img_file->getClientOriginalExtension();       //文件类型
         // echo "<pre>";print_r($file_ext);echo "</pre>";
         $new_file_name = 'lb'.date('Y-m-d').Str::random(10).'.'.$file_ext;      //文件名
-        $save_file_path = $request->file('img')->storeAs('media',$new_file_name);    //返回保存成功之后的路径
+        $save_file_path = $request->file('img')->storeAs('images',$new_file_name);    //返回保存成功之后的路径
         // echo "<pre>";print_r($save_file_path);echo "</pre>";
         // die;
         // echo 'sa';

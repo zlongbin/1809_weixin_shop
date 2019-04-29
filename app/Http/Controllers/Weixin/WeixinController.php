@@ -264,4 +264,30 @@ class WeixinController extends Controller
             echo '欢迎访问此网页';die;
         }
     }
+    public function createMenu(){
+        $count = GoodsModel::get()->count();
+        $goods = GoodsModel::where(['id' => rand(1,$count)])->first();
+        $Url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goods['id'];
+        $url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".getAccessToken();
+        $json_arr = [
+            "button" => [
+                [
+                    'type' => 'view',
+                    'name' => '最新福利',
+                    'url' => $Url
+                ]
+            ]
+        ];
+        $json = json_encode($json_arr,JSON_UNESCAPED_UNICODE);
+        $client = new Client;
+        $response = $client -> request('post',$url,$json);
+        $body = $response->getBody();
+        $arr = json_decode($body,true);
+        echo "<pre>";print_r($arr);echo "</pre>";
+        if($arr['errcode']>0){
+            echo "创建菜单失败";
+        }else{
+            echo "创建菜单成功";
+        }
+    }
 }

@@ -14,7 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
-
+// phpinfo
+Route::get('/info', function () {
+    phpinfo();
+ });
+ 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -39,8 +43,8 @@ Route::get('/goods/sort',"GoodsController@getSort");        //浏览记录排名
 Route::get('/goods/history',"GoodsController@history");         //浏览历史
 
 // 微信JSSDK
-Route::get('/js/test',"Weixin\JssdkController@jsTest");         //浏览历史
-Route::get('/js/getImg',"Weixin\JssdkController@getImg");         //浏览历史
+Route::get('/js/test',"Weixin\JssdkController@jsTest");         //
+Route::get('/js/getImg',"Weixin\JssdkController@getImg");         //
 
 //微信事件推送
 Route::get('/wx/valid',"Weixin\WeixinController@valid");         //首次处理
@@ -55,3 +59,6 @@ Route::get('/wxweb/getu',"Weixin\WeixinController@getU");         //删除过期
 
 //生成二维码
 Route::get('/ticket',"QRcodeController@ticket");         //删除过期订单
+
+//创建自定义菜单
+Route::get('/weixin/createMenu',"WeixinController@createMenu");         //删除过期订单
