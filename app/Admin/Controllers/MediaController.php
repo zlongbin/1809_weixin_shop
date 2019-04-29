@@ -44,7 +44,7 @@ class MediaController extends Controller
         ]);
         $body = $response -> getBody();
         $json = json_decode($body,true);
-        echo "<pre>";print_r($json);echo "</pre>";
+        // echo "<pre>";print_r($json);echo "</pre>";die;
         $data=[
             'media_id'=>$json['media_id'],
             'add_time'=>time(),

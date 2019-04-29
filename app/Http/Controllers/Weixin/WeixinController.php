@@ -179,7 +179,7 @@ class WeixinController extends Controller
                 return  $response;
             }else{          //搜索商品
                 $goods = GoodsModel::where('name','like',"%".$xml_obj->Content."%")->first();
-                $PicUrl = "http://1809zhoubinbin.comcto.com/images/QQ图片20190107153840.jpg";
+                $PicUrl = "http://1809zhoubinbin.comcto.com/media/".$goods['img'];
                 $Url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goods['id'];
                 if($goods){
                     $response = '<xml>
@@ -200,7 +200,7 @@ class WeixinController extends Controller
                 }else{
                     $count = GoodsModel::get()->count();
                     $goods = GoodsModel::where(['id' => rand(1,$count)])->first();
-                    $PicUrl = "http://1809zhoubinbin.comcto.com/images/QQ图片20190107153840.jpg";
+                    $PicUrl = "http://1809zhoubinbin.comcto.com/media/".$goods['img'];
                     $Url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goods['id'];
                     $response = '<xml>
                     <ToUserName><![CDATA['.$openid.']]></ToUserName>
