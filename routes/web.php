@@ -61,4 +61,4 @@ Route::get('/wxweb/getu',"Weixin\WeixinController@getU");         //删除过期
 Route::get('/ticket',"QRcodeController@ticket");         //删除过期订单
 
 //创建自定义菜单
-Route::get('/weixin/createMenu',"WeixinController@createMenu");         //删除过期订单
+Route::get('/weixin/createMenu',"Weixin\WeixinController@createMenu");         //删除过期订单
