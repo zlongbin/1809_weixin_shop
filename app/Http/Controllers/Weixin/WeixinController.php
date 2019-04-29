@@ -265,23 +265,25 @@ class WeixinController extends Controller
             echo '欢迎访问此网页';die;
         }
     }
+    // 自定义菜单
     public function createMenu(){
         $count = GoodsModel::get()->count();
         $goods = GoodsModel::where(['id' => rand(1,$count)])->first();
-        $Url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goods['id'];
-        $url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".getAccessToken();
+        $url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goods['id'];
+        $menu_url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".getAccessToken();
+        $response_url =  'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APP_ID').'&redirect_uri='.urlEncode($Url).'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
         $json_arr = [
             "button" => [
                 [
                     'type' => 'view',
                     'name' => '最新福利',
-                    'url' => $Url
+                    'url' => $response_url
                 ]
             ]
         ];
         $str = json_encode($json_arr,JSON_UNESCAPED_UNICODE);
         $client = new Client;
-        $response = $client -> request('post',$url,['body' => $str]);
+        $response = $client -> request('post',$menu_url,['body' => $str]);
         $body = $response->getBody();
         $arr = json_decode($body,true);
         echo "<pre>";print_r($arr);echo "</pre>";
