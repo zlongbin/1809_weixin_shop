@@ -39,7 +39,7 @@ class WeixinController extends Controller
         $PicUrl = "http://1809zhoubinbin.comcto.com/images/QQ图片20190107153840.jpg";
         $Url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goodsInfo['id'];
         
-        if($event=='subscribe'){
+        if($event=='subscribe'){        //扫码关注（未关注）
             if($eventkey==true){
                 $tmp_user = TmpWxUserModel::where(['openid'=>$openid])->first();
                 if(!$tmp_user){
@@ -52,9 +52,6 @@ class WeixinController extends Controller
                 }else{
                     $user="欢迎回来";
                 }
-                //扫码关注事件（带参数的二维码）
-                // $PicUrl = "http://1809zhoubinbin.comcto.com/images/QQ图片20190107153840.jpg";
-                // $Url = "http://1809zhoubinbin.comcto.com";
                 //用户未关注
                 $response = '<xml>
                 <ToUserName><![CDATA['.$openid.']]></ToUserName>
@@ -86,7 +83,6 @@ class WeixinController extends Controller
                 }else{
                     // 获取用户信息
                     $user =$this->getUserInfo($openid);
-                    // print_r($user) ;die;
                     // 用户信息入库
                     $user_Info=[
                         'openid'=>$user['openid'],
@@ -104,7 +100,7 @@ class WeixinController extends Controller
                     </xml>';
                 }
             }
-        }elseif($event=='SCAN'){
+        }elseif($event=='SCAN'){        //扫码关注（已关注）
             $tmp_user = TmpWxUserModel::where(['openid'=>$openid])->first();
             if(!$tmp_user){
                  // 用户信息入库
@@ -116,9 +112,6 @@ class WeixinController extends Controller
             }else{
                 $user="欢迎回来";
             }
-            //扫码关注事件（带参数的二维码）
-            // $PicUrl = "http://1809zhoubinbin.comcto.com/images/QQ图片20190107153840.jpg";
-            // $Url = "http://1809zhoubinbin.comcto.com";
             //用户已关注
             $response = '<xml>
             <ToUserName><![CDATA['.$openid.']]></ToUserName>
@@ -136,7 +129,7 @@ class WeixinController extends Controller
             </Articles>
             </xml>';
             return $response;
-        }elseif($msg_type=='text'){
+        }elseif($msg_type=='text'){                 //获取天气信息
             if(strpos($xml_obj->Content,"+天气")){
                 $city=explode('+',$xml_obj->Content)[0];
                 // echo "City : ".$city;
@@ -167,21 +160,7 @@ class WeixinController extends Controller
                     </xml>';
                 }
                 return $response_xml;
-            }elseif(strpos($xml_obj->Content,"最新商品")!==false){
-                // echo $xml_obj->Content;
-                // echo (strpos($xml_obj->Content,"最新商品"));
-                // $goodsInfo = GoodsModel::orderBy('id','desc')->first();
-                // // echo "<pre>";print_r($goodsInfo);echo "</pre>";
-                // // echo $goodsInfo['id'];
-                // $PicUrl = "http://1809zhoubinbin.comcto.com/images/QQ图片20190107153840.jpg";
-                // $Url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goodsInfo['id'];
-        //         echo 'Content: '. $xml_obj->Content;echo '</br>';              //文字内容
-        // echo 'Content: '. $wx_id;echo '</br>';              //文字内容
-        // echo 'Content: '. $openid;echo '</br>';              //文字内容
-        // echo 'Content: '. $goodsInfo['name'];echo '</br>';              //文字内容
-        // echo 'Content: '. $PicUrl;echo '</br>';              //文字内容
-        // echo 'Content: '. $Url;echo '</br>';              //文字内容
-        //         die;
+            }elseif(strpos($xml_obj->Content,"最新商品")!==false){      //最新商品
                 $response = '<xml>
                 <ToUserName><![CDATA['.$openid.']]></ToUserName>
                 <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
@@ -198,6 +177,48 @@ class WeixinController extends Controller
                 </Articles>
                 </xml>';
                 return  $response;
+            }else{          //搜索商品
+                $goods = GoodsModel::where('name','like',"%".$xml_obj->Content."%")->first();
+                $PicUrl = "http://1809zhoubinbin.comcto.com/images/QQ图片20190107153840.jpg";
+                $Url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goods['id'];
+                if($goods){
+                    $response = '<xml>
+                    <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                    <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+                    <CreateTime>'.time().'</CreateTime>
+                    <MsgType><![CDATA[news]]></MsgType>
+                    <ArticleCount>1</ArticleCount>
+                    <Articles>
+                        <item>
+                        <Title><![CDATA['.$goods['name'].']]></Title>
+                        <Description><![CDATA["您要搜索的商品"]]></Description>
+                        <PicUrl><![CDATA['.$PicUrl.']]></PicUrl>
+                        <Url><![CDATA['.$Url.']]></Url>
+                        </item>
+                    </Articles>
+                    </xml>';
+                }else{
+                    $count = GoodsModel::get()->count();
+                    $goods = GoodsModel::where(['id' => rand(1,$count)])->first();
+                    $PicUrl = "http://1809zhoubinbin.comcto.com/images/QQ图片20190107153840.jpg";
+                    $Url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goods['id'];
+                    $response = '<xml>
+                    <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                    <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+                    <CreateTime>'.time().'</CreateTime>
+                    <MsgType><![CDATA[news]]></MsgType>
+                    <ArticleCount>1</ArticleCount>
+                    <Articles>
+                        <item>
+                        <Title><![CDATA['.$goods['name'].']]></Title>
+                        <Description><![CDATA["为搜索到您要找的商品，为您推荐以下商品"]]></Description>
+                        <PicUrl><![CDATA['.$PicUrl.']]></PicUrl>
+                        <Url><![CDATA['.$Url.']]></Url>
+                        </item>
+                    </Articles>
+                    </xml>';
+                }
+                return $response;
             }
         }
     }
