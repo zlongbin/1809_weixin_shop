@@ -265,13 +265,27 @@ class WeixinController extends Controller
             echo '欢迎访问此网页';die;
         }
     }
-    // 自定义菜单
-    public function createMenu(){
+    public function menu(){
         $count = GoodsModel::get()->count();
         $goods = GoodsModel::where(['id' => rand(1,$count)])->first();
         $url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goods['id'];
+        $code = $_GET['code'];
+        // 获取授权access_token
+        $access_token_url ='https://api.weixin.qq.com/sns/oauth2/access_token?appid='.env('WX_APP_ID').'&secret='.env('WX_APP_SECRET').'&code='.$code.'&grant_type=authorization_code';
+        $response = json_decode(file_get_contents($access_token_url),true);
+        // echo "<pre>";print_r($response);echo "</pre>";
+        $access_token = $response['access_token'];
+        $openid = $response['openid'];
+        // 获取用户信息
+        $user_url = 'https://api.weixin.qq.com/sns/userinfo?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
+        $user_Info = json_decode(file_get_contents($user_url),true);
+        echo "欢迎".$user_Info['nickname']."访问此网页";
+        header("refresh:3;url={$url}"); 
+    }
+    // 自定义菜单
+    public function createMenu(){
         $menu_url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".getAccessToken();
-        $response_url =  'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APP_ID').'&redirect_uri='.urlEncode($url).'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+        $response_url =  'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APP_ID').'&redirect_uri=http://1809zhoubinbin.comcto.com/weixin/menu&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
         $json_arr = [
             "button" => [
                 [
