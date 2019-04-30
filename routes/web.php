@@ -63,3 +63,8 @@ Route::get('/ticket',"QRcodeController@ticket");         //删除过期订单
 //创建自定义菜单
 Route::get('/weixin/createMenu',"Weixin\WeixinController@createMenu");         //创建菜单
 Route::get('/weixin/menu',"Weixin\WeixinController@menu");         //回调
+
+
+// 月考
+Route::get('/weixin/yuekao',"YuekaoController@yuekao");         //首次接入
+

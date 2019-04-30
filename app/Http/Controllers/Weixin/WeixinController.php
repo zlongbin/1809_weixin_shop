@@ -39,8 +39,9 @@ class WeixinController extends Controller
         $goodsInfo = GoodsModel::orderBy('id','desc')->first();
         $PicUrl = "http://1809zhoubinbin.comcto.com/images/QQ图片20190107153840.jpg";
         $Url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goodsInfo['id'];
-        
-        if($event=='subscribe'){        //扫码关注（未关注）
+        if($event=="click"){
+            
+        }elseif($event=='subscribe'){        //扫码关注（未关注）
             if($eventkey==true){
                 $tmp_user = TmpWxUserModel::where(['openid'=>$openid])->first();
                 if(!$tmp_user){
@@ -292,7 +293,12 @@ class WeixinController extends Controller
                     'type' => 'view',
                     'name' => '最新福利',
                     'url' => $response_url
-                ]
+                ],
+                [
+                    'type' => 'click',
+                    'name' => '签到',
+                    'key' => 'key_click_1'
+                ],
             ]
         ];
         $str = json_encode($json_arr,JSON_UNESCAPED_UNICODE);
