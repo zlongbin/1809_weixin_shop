@@ -68,4 +68,6 @@ Route::get('/weixin/menu',"Weixin\WeixinController@menu");         //回调
 // 月考
 Route::get('/weixin/yuekao',"YuekaoController@yuekao");         //首次接入
 Route::post('/weixin/yuekao',"YuekaoController@Event");         //事件推送
+Route::get('/weixin/id',"YuekaoController@id");         //事件推送
+
 
