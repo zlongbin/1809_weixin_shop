@@ -75,7 +75,7 @@ class YuekaoController extends Controller
     public function id(){
         $id_url = "https://api.weixin.qq.com/cgi-bin/template/api_add_template?access_token=".$this->access_token();
         $client = new Client;
-        $response = $cliect->request('post',$url,['body'=>["template_id_short"=>"TM00015"]]);
+        $response = $client->request('post',$url,['body'=>["template_id_short"=>"TM00015"]]);
         $body = $response->getBody();
         $json = json_decode($json,true);
         echo $json;
