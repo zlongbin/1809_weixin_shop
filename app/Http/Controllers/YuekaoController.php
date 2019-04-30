@@ -52,7 +52,35 @@ class YuekaoController extends Controller
                 </xml>';
             }
         }elseif($MsgType=='text'){
-            
+            $goods = GoodsModel::where('name','like',"%".$xml->Content."%")->first();
+            $picurl = "http://1809zhoubinbin.comcto.com/images/".$goods['img'];
+            $url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goods['id'];
+            if($goods){
+                $response ='<xml>
+                <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+                <CreateTime>'.time().'</CreateTime>
+                <MsgType><![CDATA[news]]></MsgType>
+                <ArticleCount>1</ArticleCount>
+                <Articles>
+                  <item>
+                    <Title><![CDATA['.$goods['name'].']]></Title>
+                    <Description><![CDATA[商品]]></Description>
+                    <PicUrl><![CDATA['.$picurl.']]></PicUrl>
+                    <Url><![CDATA['.$url.']]></Url>
+                  </item>
+                </Articles>
+              </xml>';
+            }else{
+                $response ='<xml>
+                <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+                <CreateTime>'.time().'</CreateTime>
+                <MsgType><![CDATA[text]]></MsgType>
+                <Content><![CDATA[没有此商品]]></Content>
+                </xml>';
+            }  
+            return $response;
         }
     }
     public function access_token(){
@@ -72,41 +100,4 @@ class YuekaoController extends Controller
             }
         }
     }
-    public function id(){
-        $id_url = "https://api.weixin.qq.com/cgi-bin/template/api_add_template?access_token=".$this->access_token();
-        $client = new Client;
-        $response = $client->request('post',$id_url,['multipart'=>["template_id_short"=>"TM00015"]]);
-        $body = $response->getBody();
-        $json = json_decode($json,true);
-        echo $json;
-    }
 }
-            // $goods = GoodsModel::where('name','like',"%".$xml->Content."%")->first();
-            // $picurl = "http://1809zhoubinbin.comcto.com/images/".$goods['img'];
-            // $url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goods['id'];
-            // if($goods){
-            //     $response ='<xml>
-            //     <ToUserName><![CDATA['.$openid.']]></ToUserName>
-            //     <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
-            //     <CreateTime>'.time().'</CreateTime>
-            //     <MsgType><![CDATA[news]]></MsgType>
-            //     <ArticleCount>1</ArticleCount>
-            //     <Articles>
-            //       <item>
-            //         <Title><![CDATA['.$goods['name'].']]></Title>
-            //         <Description><![CDATA[商品]]></Description>
-            //         <PicUrl><![CDATA['.$picurl.']]></PicUrl>
-            //         <Url><![CDATA['.$url.']]></Url>
-            //       </item>
-            //     </Articles>
-            //   </xml>';
-            // }else{
-            //     $response ='<xml>
-            //     <ToUserName><![CDATA['.$openid.']]></ToUserName>
-            //     <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
-            //     <CreateTime>'.time().'</CreateTime>
-            //     <MsgType><![CDATA[text]]></MsgType>
-            //     <Content><![CDATA[没有此商品]]></Content>
-            //     </xml>';
-            // }  
-            // return $response;
