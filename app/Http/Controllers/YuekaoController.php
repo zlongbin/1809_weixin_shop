@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use App\Model\YuekaoModel;
 use App\Model\GoodsModel;
+use App\Model\YkModel;
 use GuzzleHttp\Client;
 
 
@@ -105,5 +106,11 @@ class YuekaoController extends Controller
     public function id(){
         $goods = Redis::lrange('goods_name','0','-1');
         echo "<pre>";print_r($goods);echo "</pre>";
+    }
+    public function add(){
+        $goods = Redis::lrange('goods_name','0','-1');
+        foreach($goods as $k=>$v){
+            YkModel::insert(['goods_name'=>$v]);
+        }
     }
 }
