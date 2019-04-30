@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use App\Model\YuekaoModel;
 use App\Model\GoodsModel;
+use GuzzleHttp\Client;
+
 
 class YuekaoController extends Controller
 {
