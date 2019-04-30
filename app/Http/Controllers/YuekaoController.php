@@ -43,7 +43,7 @@ class YuekaoController extends Controller
             $response = json_decode(file_get_contents($url),true);
             if(isset($response['access_token'])){
                 Redis::set($key,$response['access_token']);
-                Redis::expore($key,3600);
+                Redis::expire($key,3600);
                 return $response['access_token'];
             }else{
                 return false;
