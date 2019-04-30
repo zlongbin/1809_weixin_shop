@@ -56,6 +56,8 @@ class YuekaoController extends Controller
             $picurl = "http://1809zhoubinbin.comcto.com/images/".$goods['img'];
             $url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goods['id'];
             if($goods){
+                $key = "goods_name";
+                Redis::lpush($key,$goods['name']);
                 $response ='<xml>
                 <ToUserName><![CDATA['.$openid.']]></ToUserName>
                 <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
@@ -99,5 +101,9 @@ class YuekaoController extends Controller
                 return false;
             }
         }
+    }
+    public function id(){
+        $goods = Redis::get('goods_name');
+        echo $goods;
     }
 }
