@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
+use App\Model\YuekaoModel;
+
 
 class YuekaoController extends Controller
 {
@@ -17,21 +19,29 @@ class YuekaoController extends Controller
         $str = $time . $content . "\n";
         file_put_contents("logs/yuekao.log",$str);
         $xml = simplexml_load_string($content);
-        echo "ToUserName:" .$xml->ToUserName;echo "</br>";          //公众号id
-        echo "FromUserName:" .$xml->FromUserName;echo "</br>";      //用户id
-        echo "MsgType:" .$xml->MsgType;echo "</br>";                //事件类型
-        echo "Content:" .$xml->Content;echo "</br>";                //文本消息
+        // echo "ToUserName:" .$xml->ToUserName;echo "</br>";          //公众号id
+        // echo "FromUserName:" .$xml->FromUserName;echo "</br>";      //用户id
+        // echo "MsgType:" .$xml->MsgType;echo "</br>";                //事件类型
+        // echo "Content:" .$xml->Content;echo "</br>";                //文本消息
 
-        echo $this->access_token();
-
-//         <xml><ToUserName><![CDATA[gh_6a4f70b5eed6]]></ToUserName>^M
-// <FromUserName><![CDATA[od-A-1FwnuCU3XUp3HU6wtIuDw48]]></FromUserName>^M
-// <CreateTime>1555396243</CreateTime>^M
-// <MsgType><![CDATA[text]]></MsgType>^M
-// <Content><![CDATA[最新商品]]></Content>^M
-// <MsgId>22267922250759760</MsgId>^M
-// </xml>^M
-
+        // echo $this->access_token();
+        $wx_id = $xml->ToUserName;
+        $openid = $xml->FromUserName;
+        $MsgType = $xml->MsgType;
+        if($MsgType=="subscribe"){
+            $user = YuekaoModel::where(['openid'=>$openid])->first();
+            if(!$user){
+                $res = YuekaoModel::insertGetId(['openid'=>$openid]);
+                $response ='<xml>
+                <ToUserName><![CDATA[toUser]]></ToUserName>
+                <FromUserName><![CDATA[fromUser]]></FromUserName>
+                <CreateTime>12345678</CreateTime>
+                <MsgType><![CDATA[text]]></MsgType>
+                <Content><![CDATA[请输入商品名字字样]]></Content>
+                </xml>';
+            }
+            return $response;
+        }
     }
     public function access_token(){
         $key = "access_token";
