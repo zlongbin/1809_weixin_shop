@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use App\Model\YuekaoModel;
-
+use App\Model\GoodsModel;
 
 class YuekaoController extends Controller
 {
@@ -28,6 +28,7 @@ class YuekaoController extends Controller
         $wx_id = $xml->ToUserName;
         $openid = $xml->FromUserName;
         $Event = $xml->Event;
+        $MsgType = $xml->MsgType;
         if($Event=="subscribe"){
             $user = YuekaoModel::where(['openid'=>$openid])->first();
             if($user){
@@ -48,6 +49,36 @@ class YuekaoController extends Controller
                 <Content><![CDATA[请输入商品名字字样]]></Content>
                 </xml>';
             }
+        }elseif($MsgType=='text'){
+            $goods = GoodsModel::where('name','like',"%".$xml->Content."%")->first();
+            $picurl = "http://1809zhoubinbin.comcto.com/images/".$goods['img'];
+            $url = "http://1809zhoubinbin.comcto.com/goods/detail?goods_id=".$goods['id'];
+            if($goods){
+                $response ='<xml>
+                <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+                <CreateTime>'.time().'</CreateTime>
+                <MsgType><![CDATA[news]]></MsgType>
+                <ArticleCount>1</ArticleCount>
+                <Articles>
+                  <item>
+                    <Title><![CDATA['.$goods['name'].']]></Title>
+                    <Description><![CDATA[商品]]></Description>
+                    <PicUrl><![CDATA['.$picurl.']]></PicUrl>
+                    <Url><![CDATA['.$url.']]></Url>
+                  </item>
+                </Articles>
+              </xml>';
+            }else{
+                $response ='<xml>
+                <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
+                <CreateTime>'.time().'</CreateTime>
+                <MsgType><![CDATA[text]]></MsgType>
+                <Content><![CDATA[没有此商品]]></Content>
+                </xml>';
+            }  
+            return $response;
         }
     }
     public function access_token(){
