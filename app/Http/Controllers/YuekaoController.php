@@ -32,8 +32,8 @@ class YuekaoController extends Controller
             $user = YuekaoModel::where(['openid'=>$openid])->first();
             if($user){
                 echo '<xml>
-                <ToUserName><![CDATA['.$wx_id.']]></ToUserName>
-                <FromUserName><![CDATA['.$openid.']]></FromUserName>
+                <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
                 <CreateTime>'.time().'</CreateTime>
                 <MsgType><![CDATA[text]]></MsgType>
                 <Content><![CDATA[欢迎回来]]></Content>
@@ -41,8 +41,8 @@ class YuekaoController extends Controller
             }else{
                 $res = YuekaoModel::insertGetId(['openid'=>$openid]);
                 echo '<xml>
-                <ToUserName><![CDATA['.$wx_id.']]></ToUserName>
-                <FromUserName><![CDATA['.$openid.']]></FromUserName>
+                <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                <FromUserName><![CDATA['.$wx_id.']]></FromUserName>
                 <CreateTime>'.time().'</CreateTime>
                 <MsgType><![CDATA[text]]></MsgType>
                 <Content><![CDATA[请输入商品名字字样]]></Content>
