@@ -14,7 +14,7 @@ class YuekaoController extends Controller
         $content = file_get_contents("php://input");
         $time = date("Y-m-d H:i:s");
         $str = $time . $content . "\n";
-        file_put_contents("logs\yuekao.log",$str);
+        file_put_contents("logs/yuekao.log",$str);
         $xml = simplexml_load_string($content);
         echo "ToUserName:" .$xml->ToUserName;echo "</br>";          //公众号id
         echo "FromUserName:" .$xml->FromUserName;echo "</br>";      //用户id
