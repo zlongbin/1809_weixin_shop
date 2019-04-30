@@ -103,7 +103,7 @@ class YuekaoController extends Controller
         }
     }
     public function id(){
-        $goods = Redis::get('goods_name');
+        $goods = Redis::lrange('goods_name');
         echo $goods;
     }
 }
