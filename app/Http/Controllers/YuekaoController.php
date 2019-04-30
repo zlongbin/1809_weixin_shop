@@ -21,14 +21,14 @@ class YuekaoController extends Controller
         $xml = simplexml_load_string($content);
         // echo "ToUserName:" .$xml->ToUserName;echo "</br>";          //公众号id
         // echo "FromUserName:" .$xml->FromUserName;echo "</br>";      //用户id
-        // echo "MsgType:" .$xml->MsgType;echo "</br>";                //事件类型
+        // echo "MsgType:" .$xml->MsgType;echo "</br>";               
         // echo "Content:" .$xml->Content;echo "</br>";                //文本消息
 
         // echo $this->access_token();
         $wx_id = $xml->ToUserName;
         $openid = $xml->FromUserName;
-        $MsgType = $xml->MsgType;
-        if($MsgType=="subscribe"){
+        $Event = $xml->Event;
+        if($Event=="subscribe"){
             $user = YuekaoModel::where(['openid'=>$openid])->first();
             if(!$user){
                 $res = YuekaoModel::insertGetId(['openid'=>$openid]);
