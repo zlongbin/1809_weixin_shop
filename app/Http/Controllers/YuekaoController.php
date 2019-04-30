@@ -30,9 +30,17 @@ class YuekaoController extends Controller
         $Event = $xml->Event;
         if($Event=="subscribe"){
             $user = YuekaoModel::where(['openid'=>$openid])->first();
-            if(!$user){
+            if($user){
+                echo '<xml>
+                <ToUserName><![CDATA['.$wx_id.']]></ToUserName>
+                <FromUserName><![CDATA['.$openid.']]></FromUserName>
+                <CreateTime>'.time().'</CreateTime>
+                <MsgType><![CDATA[text]]></MsgType>
+                <Content><![CDATA[欢迎回来]]></Content>
+                </xml>';
+            }else{
                 $res = YuekaoModel::insertGetId(['openid'=>$openid]);
-                $response ='<xml>
+                echo '<xml>
                 <ToUserName><![CDATA['.$wx_id.']]></ToUserName>
                 <FromUserName><![CDATA['.$openid.']]></FromUserName>
                 <CreateTime>'.time().'</CreateTime>
@@ -40,7 +48,6 @@ class YuekaoController extends Controller
                 <Content><![CDATA[请输入商品名字字样]]></Content>
                 </xml>';
             }
-            return $response;
         }
     }
     public function access_token(){
