@@ -33,9 +33,9 @@ class YuekaoController extends Controller
             if(!$user){
                 $res = YuekaoModel::insertGetId(['openid'=>$openid]);
                 $response ='<xml>
-                <ToUserName><![CDATA[toUser]]></ToUserName>
-                <FromUserName><![CDATA[fromUser]]></FromUserName>
-                <CreateTime>12345678</CreateTime>
+                <ToUserName><![CDATA['.$wx_id.']]></ToUserName>
+                <FromUserName><![CDATA['.$openid.']]></FromUserName>
+                <CreateTime>'.time().'</CreateTime>
                 <MsgType><![CDATA[text]]></MsgType>
                 <Content><![CDATA[请输入商品名字字样]]></Content>
                 </xml>';
