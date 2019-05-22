@@ -325,14 +325,25 @@ class WeixinController extends Controller
             $openid[$k]=$v['openid'];
         }
         // var_dump($openid);die;
+        $content = [
+            0 => '真理惟一可靠的标准就是永远自相符合',
+            1 => '时间是一切财富中最宝贵的财富',
+            2 => '世界上一成不变的东西，只有“任何事物都是在不断变化的”这条真理',
+            3 => '过放荡不羁的生活，容易得像顺水推舟，但是要结识良朋益友，却难如登天',
+            4 => '如果你浪费了自己的年龄，那是挺可悲的。因为你的青春只能持续一点儿时间——很短的一点儿时间',
+            5 => '在一个崇高的目标支持下，不停地工作，即使慢，也一定会获得成功'
+        ];
+        echo $content[rand(0,4)];die;
         $json_arr = [
             "touser"=>[
                 $openid
             ],
              "msgtype"=> "text",
-             "text"=> ["content"=>"hello from boxer."] 
+             "text"=> ["content"=>$content[rand(0,4)]] 
         ];
         $str = json_encode($json_arr,JSON_UNESCAPED_UNICODE);
+
+
         $client = new Client;
         $response = $client -> request('post',$url,['body' => $str]);
         $body = $response->getBody();
