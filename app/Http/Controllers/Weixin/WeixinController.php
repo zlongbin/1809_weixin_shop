@@ -135,7 +135,7 @@ class WeixinController extends Controller
             if(strpos($xml_obj->Content,"+天气")){
                 $city=explode('+',$xml_obj->Content)[0];
                 // echo "City : ".$city;
-                $url = "https://free-api.heweather.net/s6/weather/now?key=HE1904161042411866&location=".$city;
+                $url = "https://free-api.heweather.net/s6/weather/now?key=HE1905221904151634&location=".$city;
                 $arr = json_decode(file_get_contents($url),true);
                 // echo '<pre>';print_r($arr);echo "</pre>";               
                 if($arr['HeWeather6'][0]['status']=='ok'){
@@ -213,7 +213,7 @@ class WeixinController extends Controller
                     <Articles>
                         <item>
                         <Title><![CDATA['.$goods['name'].']]></Title>
-                        <Description><![CDATA["为搜索到您要找的商品，为您推荐以下商品"]]></Description>
+                        <Description><![CDATA["未搜索到您要找的商品，为您推荐以下商品"]]></Description>
                         <PicUrl><![CDATA['.$PicUrl.']]></PicUrl>
                         <Url><![CDATA['.$Url.']]></Url>
                         </item>
