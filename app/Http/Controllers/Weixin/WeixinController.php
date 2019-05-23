@@ -333,7 +333,7 @@ class WeixinController extends Controller
             4 => '如果你浪费了自己的年龄，那是挺可悲的。因为你的青春只能持续一点儿时间——很短的一点儿时间',
             5 => '在一个崇高的目标支持下，不停地工作，即使慢，也一定会获得成功'
         ];
-        echo $content[rand(0,4)];die;
+        // echo $content[rand(0,4)];die;
         $json_arr = [
             "touser"=>[
                 $openid
