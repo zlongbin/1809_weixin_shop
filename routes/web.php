@@ -72,4 +72,4 @@ Route::get('/weixin/id',"YuekaoController@id");         //事件推送
 Route::get('/weixin/add',"YuekaoController@add");         //事件推送
 
 // 群发消息
-Route::get('/weixin/message',"Weixin\WeixinController@message");         //首次接入
+Route::get('/weixin/message',"Weixin\WeixinController@message");         //群发消息
