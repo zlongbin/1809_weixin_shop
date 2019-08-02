@@ -347,7 +347,7 @@ class WeixinController extends Controller
                 $openid
             ],
              "msgtype"=> "text",
-             "text"=> ["content"=>$content[rand(0,4)]] 
+             "text"=> ["content"=>$content[rand(0,13)]] 
         ];
         $str = json_encode($json_arr,JSON_UNESCAPED_UNICODE);
 
