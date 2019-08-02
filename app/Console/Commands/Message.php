@@ -38,6 +38,6 @@ class Message extends Command
     public function handle()
     {
         //
-        file_put_contents('/wwwroot/test.log', date("Y-m-d H:i:s"), FILE_APPEND);
+        file_put_contents('/wwwroot/1809_weixin_shop/public/logs/test.log', date("Y-m-d H:i:s"), FILE_APPEND);
     }
 }
