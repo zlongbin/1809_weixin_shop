@@ -1,6 +1,6 @@
 /node_modules
 /public/hot
-/public/logs/weixin_event.log
+/public/logs/*
 /public/storage
 /storage/*.key
 /vendor
