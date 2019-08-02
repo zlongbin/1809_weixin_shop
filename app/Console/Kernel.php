@@ -27,9 +27,9 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->exec('curl "http://1809zhoubinbin.comcto.com/weixin/message" >> /wwwroot/1809_weixin_shop/public/logs/weixin.log')->everyMinute();
-        $schedule->command(Message::class)->everyMinute();
-        // $schedule->command("Message")->everyMinute();
+        $schedule->exec('curl http://1809zhoubinbin.comcto.com/weixin/message >> /wwwroot/1809_weixin_shop/public/logs/weixin.log')->everyMinute();
+        // $schedule->command(Message::class)->everyMinute();
+        $schedule->command("echo:time")->everyMinute();
     }
 
     /**

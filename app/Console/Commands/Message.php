@@ -11,7 +11,7 @@ class Message extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'echo:time';
 
     /**
      * The console command description.
